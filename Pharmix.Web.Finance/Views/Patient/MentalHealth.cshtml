@@ -1,0 +1,233 @@
+﻿@model Pharmix.Web.Models.PatientViewModel.MentalHealthViewModel
+@using Pharmix.Data.Enums
+@{
+    Layout = "_LayoutPregnancy";
+    ViewData["PatientId"] = Model.PatientId;
+    ViewBag.Title = "Patient Info";
+}
+
+@section Styles{ 
+    <style type="text/css">
+        @@media screen and (max-width: 600px) {
+            .hide-on-sm {
+                display:none;
+            }
+        }
+    </style>
+}
+
+@if (Model.IsAdmin)
+{
+    <form id="formUser" asp-action="MentalHealth" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PatientId" />
+        <input type="hidden" asp-for="PregnancyId" />
+        <input type="hidden" asp-for="Id" />
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group text-center">
+                    <button type="submit" id="btnSaveUser" class="btn btn-sm btn-success">Save All Changes</button>
+                    <button type="reset" id="btnCancelUser" class="btn btn-sm btn-danger">Cancel</button>
+                </div>
+                <hr />
+            </div>
+            <div class="col-sm-5 form-horizontal">
+                <div class="form-group">
+                    <label asp-for="MentalIllness" class="col-sm-8 control-label"></label>
+                    <div class="col-sm-4 control-label">
+                        <input asp-for="MentalIllness" type="radio" value="true" /> Yes
+                        <input asp-for="MentalIllness" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="MentalIllness" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PreviousTreatment" class="col-sm-8 control-label"></label>
+                    <div class="col-sm-4 control-label">
+                        <input asp-for="PreviousTreatment" type="radio" value="true" /> Yes
+                        <input asp-for="PreviousTreatment" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="PreviousTreatment" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FamilyHistory" class="col-sm-8 control-label"></label>
+                    <div class="col-sm-4 control-label">
+                        <input asp-for="FamilyHistory" type="radio" value="true" /> Yes
+                        <input asp-for="FamilyHistory" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="FamilyHistory" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PartnerHasHistory" class="col-sm-8 control-label"></label>
+                    <div class="col-sm-4 control-label">
+                        <input asp-for="PartnerHasHistory" type="radio" value="true" /> Yes
+                        <input asp-for="PartnerHasHistory" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="PartnerHasHistory" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-7 hide-on-sm">
+                <label class="col-sm-8" style="text-align:right">During the last month have you bothered by</label>
+                <label class="col-sm-2" style="text-align:center">1st</label>
+                <label class="col-sm-2" style="text-align:center">2nd</label>
+            </div>
+            <div class="col-sm-7 form-horizontal">
+                <div class="form-group">
+                    <label asp-for="Depressed1st" class="col-sm-8 control-label"></label>
+                    <div class="col-sm-2 control-label">
+                        <input asp-for="Depressed1st" type="radio" value="true" /> Yes
+                        <input asp-for="Depressed1st" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="Depressed1st" class="text-danger"></span>
+                    <div class="col-sm-2 control-label">
+                        <input asp-for="Depressed2nd" type="radio" value="true" /> Yes
+                        <input asp-for="Depressed2nd" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="Depressed2nd" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Interest1st" class="col-sm-8 control-label"></label>
+                    <div class="col-sm-2 control-label">
+                        <input asp-for="Interest1st" type="radio" value="true" /> Yes
+                        <input asp-for="Interest1st" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="Interest1st" class="text-danger"></span>
+                    <div class="col-sm-2 control-label">
+                        <input asp-for="Interest2nd" type="radio" value="true" /> Yes
+                        <input asp-for="Interest2nd" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="Interest2nd" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Anxious1st" class="col-sm-8 control-label"></label>
+                    <div class="col-sm-2 control-label">
+                        <input asp-for="Anxious1st" type="radio" value="true" /> Yes
+                        <input asp-for="Anxious1st" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="Anxious1st" class="text-danger"></span>
+                    <div class="col-sm-2 control-label">
+                        <input asp-for="Anxious2nd" type="radio" value="true" /> Yes
+                        <input asp-for="Anxious2nd" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="Anxious2nd" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="NeedSomething1st" class="col-sm-8 control-label"></label>
+                    <div class="col-sm-2 control-label">
+                        <input asp-for="NeedSomething1st" type="radio" value="true" /> Yes
+                        <input asp-for="NeedSomething1st" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="NeedSomething1st" class="text-danger"></span>
+                    <div class="col-sm-2 control-label">
+                        <input asp-for="NeedSomething2nd" type="radio" value="true" /> Yes
+                        <input asp-for="NeedSomething2nd" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="NeedSomething2nd" class="text-danger"></span>
+                </div>
+
+            </div>
+            <div class="col-sm-12 form-horizontal">
+                <div class="form-group">
+                    <label asp-for="Detail" class="col-sm-3 control-label"></label>
+                    <div class="col-sm-8">
+                        <input asp-for="Detail" class="form-control"/>
+                    </div>
+                    <span asp-validation-for="Detail" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+    </form>
+}
+else
+{
+    <div class="row">
+        <div class="col-sm-5 form-horizontal">
+            <div class="form-group">
+                <label asp-for="MentalIllness" class="col-sm-8 control-label"></label>
+                <div class="col-sm-4 control-label">
+                    @(Model.MentalIllness ? "Yes" : "No")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PreviousTreatment" class="col-sm-8 control-label"></label>
+                <div class="col-sm-4 control-label">
+                    @(Model.PreviousTreatment ? "Yes" : "No")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="FamilyHistory" class="col-sm-8 control-label"></label>
+                <div class="col-sm-4 control-label">
+                    @(Model.FamilyHistory ? "Yes" : "No")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PartnerHasHistory" class="col-sm-8 control-label"></label>
+                <div class="col-sm-4 control-label">
+                    @(Model.PartnerHasHistory ? "Yes" : "No")
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-7 hide-on-sm">
+            <label class="col-sm-8" style="text-align:right">During the last month have you bothered by</label>
+            <label class="col-sm-2" style="text-align:center">1st</label>
+            <label class="col-sm-2" style="text-align:center">2nd</label>
+        </div>
+        <div class="col-sm-7 form-horizontal">
+            <div class="form-group">
+                <label asp-for="Depressed1st" class="col-sm-8 control-label"></label>
+                <div class="col-sm-2 control-label">
+                    @(Model.Depressed1st ? "Yes" : "No")
+                </div>
+                <div class="col-sm-2 control-label">
+                    @(Model.Depressed2nd ? "Yes" : "No")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Interest1st" class="col-sm-8 control-label"></label>
+                <div class="col-sm-2 control-label">
+                    @(Model.Interest1st ? "Yes" : "No")
+                </div>
+                <div class="col-sm-2 control-label">
+                    @(Model.Interest2nd ? "Yes" : "No")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Anxious1st" class="col-sm-8 control-label"></label>
+                <div class="col-sm-2 control-label">
+                    @(Model.Anxious1st ? "Yes" : "No")
+                </div>
+                <div class="col-sm-2 control-label">
+                    @(Model.Anxious2nd ? "Yes" : "No")
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="NeedSomething1st" class="col-sm-8 control-label"></label>
+                <div class="col-sm-2 control-label">
+                    @(Model.NeedSomething1st ? "Yes" : "No")
+                </div>
+                <div class="col-sm-2 control-label">
+                    @(Model.NeedSomething2nd ? "Yes" : "No")
+                </div>
+            </div>
+
+        </div>
+        <div class="col-sm-12 form-horizontal">
+            <div class="form-group">
+                <label asp-for="Detail" class="col-sm-3 control-label"></label>
+                <div class="col-sm-8">
+                    @(string.IsNullOrEmpty(Model.Detail) ? "-" : Model.Detail)
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

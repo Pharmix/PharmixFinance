@@ -1,0 +1,139 @@
+﻿@model Pharmix.Data.Entities.ViewModels.Customer.LoanViewModel
+@*<script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+<div class="col-sm-12">
+    <form id="formLoan">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group col-md-6">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="TotalAmount" class="control-label">Loan Amount</label>
+            <input asp-for="TotalAmount" class="form-control" onblur="updateCompleteDate()" />
+            <span asp-validation-for="TotalAmount" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="MonthlyDue" class="control-label">Monthly Due</label>
+            <input asp-for="MonthlyDue" class="form-control" />
+            <span asp-validation-for="MonthlyDue" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Principal" class="control-label">Principal</label>
+            <input asp-for="Principal" class="form-control" onblur="updateCompleteDate()" />
+            <span asp-validation-for="Principal" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="StartedDate" class="control-label">Start date</label>
+            <input asp-for="StartedDate" class="form-control ui-datepicker-calendar"/>
+            <span asp-validation-for="StartedDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="ExpectedCompleteDate" class="control-label">Expected Complete Date</label>
+            <input asp-for="ExpectedCompleteDate" class="form-control ui-datepicker-calendar"/>
+            <span asp-validation-for="ExpectedCompleteDate" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="RepaymentPeriod" class="control-label">Repayment Period</label>
+            <input asp-for="RepaymentPeriod" class="form-control" />
+            <span asp-validation-for="RepaymentPeriod" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="RepaymentTerms" class="control-label">Repayment Terms</label>
+            <input asp-for="RepaymentTerms" class="form-control" />
+            <span asp-validation-for="RepaymentTerms" class="text-danger"></span>
+        </div>
+
+        <div class="form-group col-md-6">
+            <label asp-for="Status" class="control-label">Status</label>
+            <select asp-for="Status" asp-items="ViewBag.Status" class="form-control">
+                <option disabled selected>--- SELECT ---</option>
+            </select>
+            <span asp-validation-for="Status" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="CustomerId" class="control-label">Customer</label>
+
+            @if ((Model.CustomerId) <= 0)
+            {
+                <select asp-for="CustomerId" asp-items="ViewBag.Customers" class="form-control" id="ddlLoanFormCustomerId">
+                    <option selected disabled>--- SELECT ---</option>
+                </select>
+            }
+            else
+            {
+                <input type="hidden" asp-for="CustomerId" value="@Model.CustomerId" class="form-control hdnCustomerId" />
+                <select asp-items="ViewBag.Customers" class="form-control" id="ddlLoanFormCustomerId" disabled></select>
+            }
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="BankAccountId" class="control-label">Bank</label>
+            <select asp-for="BankAccountId" asp-items="ViewBag.BankAccounts" class="form-control">
+                <option disabled selected>--- SELECT ---</option>
+            </select>
+            <button type="button" id="btnAddBankAccount" class="btn btn-danger"><i class="fa fa-plus" aria-hidden="true"></i>AddBank</button>
+            <span asp-validation-for="BankAccountId" class="text-danger"></span>
+        </div>
+        <div class="clearfix"></div>
+        <hr />
+        <div class="form-group col-md-6 text-center">
+            <button type="button" id="btnSaveLoan" class="btn btn-success">Save</button>
+            <button type="button" id="btnCancelLoan" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Cancel</button>
+        </div>
+    </form>
+</div>
+<script>
+
+    $("#btnAddBankAccount").click(function () {
+        var customerId = $('#ddlLoanFormCustomerId').val();
+        showBankAccountPopup(customerId );
+        return false;
+    });
+    var showBankAccountPopup = function(customerId) {
+            var callback = function (response) {
+                Framework.Popup.CreateInfoPopup("Create Bank", response, null, null, null, true, initializeFormEvents);
+            };
+
+        Framework.Utility.ExecuteAjaxRequest("@Url.Action("Get","BankAccount")", { customerId: customerId }, callback);
+    }
+     var initializeFormEvents = function() {
+            $("#btnSaveBankAccount").click(function () {
+        if ($("#formBank").valid()) {
+                    var callbackSave = function (response) {
+                        //$("#linkSearch").trigger("click");
+                        if (response.StatusCode == 200) { 
+                            $("#BankAccountId").append("<option value=" + response.BankId + ">" + response.AccountNumber + "</option>");
+                            $("#BankAccountId").val(response.BankId);
+                        }
+                        $("#formBank").closest(".modal").modal("hide");
+                        
+                    };
+
+            var request = $("#formBank").serialize();
+
+                    Framework.Utility.ExecuteAjaxRequest("@Url.Action("Save", "BankAccount")", request, callbackSave);
+                    return false;
+                }
+                else
+                    return false;
+            });
+        }
+
+        function updateCompleteDate() {
+            var totalAmount = $("#TotalAmount").val();
+            var principal = $("#Principal").val();
+            if (totalAmount == null || totalAmount == "" || principal == null || principal == ""|| totalAmount == "0.00"|| principal == "0.00") return;
+            var dues = parseFloat(totalAmount) / parseFloat(principal);
+            var months = Math.ceil(dues);
+            var d = new Date();
+            d.setMonth(d.getMonth() + months);
+            var month = (d.getMonth() + 1);
+            var date = d.getDate();
+            var dateString = d.getFullYear() + "-" + (month < 10 ? "0" + month.toString() : month.toString()) + "-" + (date < 10 ? "0" + date.toString() : date.toString());
+            debugger;
+            $("#ExpectedCompleteDate").val(dateString);
+        }
+</script>

@@ -1,0 +1,60 @@
+﻿@model Pharmix.Data.Entities.ViewModels.Customer.CustomerContactViewModel
+@using Pharmix.Data.Entities.ViewModels.Customer;
+@{
+    Layout = null;
+    List<CustomerContactViewModel> customerContactViewModelList = ViewBag.CustomerContacts;
+    int customerContactCnt = customerContactViewModelList?.Count() ?? 0;
+    ViewBag.IsViewOnly = Model?.Id > 0;
+
+}
+<div class="col-sm-12">
+    <form id="formCustomerContact" class="col-md-12">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group col-md-4">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control customerContactEditControl" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label asp-for="ContactNumber" class="control-label"></label>
+            <input asp-for="ContactNumber" class="form-control customerContactEditControl" />
+            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-4">
+            <label class="control-label" style="visibility:hidden;">Buttons</label>
+            <button type="button" id="btnAddCustomerContact" class="btn btn-success">Add</button>
+        </div>
+
+        <div class="clearfix"></div>
+        <hr />
+    </form>
+
+    <div id="customerContactsContainer">
+        @{ Html.RenderPartial("_CustomerContacts", customerContactViewModelList);}
+    </div>
+
+    
+
+</div>
+
+<script>
+    $(function () {
+        
+        //$("#btnAddCustomerOpenPopup,#btnViewCustomerOpenPopup").on("click", function () {
+        //    openAddEditCustomerContactPopupClicked();
+        //});
+
+
+        @*var openAddEditCustomerContactPopupClicked = function () {
+            var customerId = $('#Id').val();
+            var callback = function (response) {
+                Framework.Popup.CreateInfoPopup("Add Customer", response, null, null, null, true);
+            };
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("GetCustomerContact","Customer")", { customerId: customerId }, callback);
+        };*@
+
+      
+
+    });
+</script>

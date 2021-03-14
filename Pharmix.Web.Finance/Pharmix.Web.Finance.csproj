@@ -1,0 +1,203 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <UserSecretsId>aspnet-Pharmix.Web-5FAA95C9-1489-4B3C-A8D4-E644127D9EFD</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="wwwroot\css\FileUpload\**" />
+    <Content Remove="wwwroot\css\FileUpload\**" />
+    <EmbeddedResource Remove="wwwroot\css\FileUpload\**" />
+    <None Remove="wwwroot\css\FileUpload\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20180505163454_SUpervisorRequest_ApplicationUser_foreignKey.cs" />
+    <Compile Remove="Migrations\20180505163454_SUpervisorRequest_ApplicationUser_foreignKey.Designer.cs" />
+    <Compile Remove="Migrations\20180509161633_OrderClassification.cs" />
+    <Compile Remove="Migrations\20180509161633_OrderClassification.Designer.cs" />
+    <Compile Remove="Migrations\20180509161853_OrderClassification.cs" />
+    <Compile Remove="Migrations\20180509161853_OrderClassification.Designer.cs" />
+    <Compile Remove="Migrations\20180510085220_OrderTrackingComment.cs" />
+    <Compile Remove="Migrations\20180510085220_OrderTrackingComment.Designer.cs" />
+    <Compile Remove="Migrations\20180510142729_OrderTrackingCommentClassification.cs" />
+    <Compile Remove="Migrations\20180510142729_OrderTrackingCommentClassification.Designer.cs" />
+    <Compile Remove="Migrations\20180512174748_TrustModule.cs" />
+    <Compile Remove="Migrations\20180512174748_TrustModule.Designer.cs" />
+    <Compile Remove="Migrations\20180513065422_LastModifiedSupervisorRequest.cs" />
+    <Compile Remove="Migrations\20180513065422_LastModifiedSupervisorRequest.Designer.cs" />
+    <Compile Remove="Migrations\20180602010506_DemoInitialisation.cs" />
+    <Compile Remove="Migrations\20180602010506_DemoInitialisation.Designer.cs" />
+    <Compile Remove="Migrations\20180602122341_ShiftUpdate.cs" />
+    <Compile Remove="Migrations\20180602122341_ShiftUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20180606175135_StaffRecur.cs" />
+    <Compile Remove="Migrations\20180606175135_StaffRecur.Designer.cs" />
+    <Compile Remove="Migrations\20180611190949_PerimssionEntityCssClass.cs" />
+    <Compile Remove="Migrations\20180611190949_PerimssionEntityCssClass.Designer.cs" />
+    <Compile Remove="Migrations\20180612191504_ProdOrder1.cs" />
+    <Compile Remove="Migrations\20180612191504_ProdOrder1.Designer.cs" />
+    <Compile Remove="Migrations\20180612212006_ProdOrder2.cs" />
+    <Compile Remove="Migrations\20180612212006_ProdOrder2.Designer.cs" />
+    <Compile Remove="Migrations\20180613164554_IsoProcAdded.cs" />
+    <Compile Remove="Migrations\20180613164554_IsoProcAdded.Designer.cs" />
+    <Compile Remove="Migrations\20180613194017_PrepOrderCont.cs" />
+    <Compile Remove="Migrations\20180613194017_PrepOrderCont.Designer.cs" />
+    <Compile Remove="Migrations\20180614190910_IsoProcUpdate.cs" />
+    <Compile Remove="Migrations\20180614190910_IsoProcUpdate.Designer.cs" />
+    <Compile Remove="Migrations\20180617022730_AuditInfoEntity.cs" />
+    <Compile Remove="Migrations\20180617022730_AuditInfoEntity.Designer.cs" />
+    <Compile Remove="Migrations\20180618181443_IdentityUserPasswordReset.cs" />
+    <Compile Remove="Migrations\20180618181443_IdentityUserPasswordReset.Designer.cs" />
+    <Compile Remove="Migrations\20180621044650_addUserIdToPatient.cs" />
+    <Compile Remove="Migrations\20180621044650_addUserIdToPatient.Designer.cs" />
+    <Compile Remove="Migrations\20180621080806_addIdNumberToPatient.cs" />
+    <Compile Remove="Migrations\20180621080806_addIdNumberToPatient.Designer.cs" />
+    <Compile Remove="Migrations\20180622081255_addPregnancyForm1Tables.cs" />
+    <Compile Remove="Migrations\20180622081255_addPregnancyForm1Tables.Designer.cs" />
+    <Compile Remove="Migrations\20180622132017_updatePregnancyEddNullableForm1Tables.cs" />
+    <Compile Remove="Migrations\20180622132017_updatePregnancyEddNullableForm1Tables.Designer.cs" />
+    <Compile Remove="Migrations\20180623204823_addForm3MedicalHistory.cs" />
+    <Compile Remove="Migrations\20180623204823_addForm3MedicalHistory.Designer.cs" />
+    <Compile Remove="Migrations\20180624034817_removeForm3MedicalHistory.cs" />
+    <Compile Remove="Migrations\20180624034817_removeForm3MedicalHistory.Designer.cs" />
+    <Compile Remove="Migrations\20180624034919_updateForm3MedicalHistory.cs" />
+    <Compile Remove="Migrations\20180624034919_updateForm3MedicalHistory.Designer.cs" />
+    <Compile Remove="Migrations\20180624064516_updateForm3MedicalHistoryFolic.cs" />
+    <Compile Remove="Migrations\20180624064516_updateForm3MedicalHistoryFolic.Designer.cs" />
+    <Compile Remove="Migrations\20180624142420_InitialMigration.cs" />
+    <Compile Remove="Migrations\20180624142420_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180624142541_InitialMigration.cs" />
+    <Compile Remove="Migrations\20180624142541_InitialMigration.Designer.cs" />
+    <Compile Remove="Migrations\20180626135254_addSecondBatchForm.cs" />
+    <Compile Remove="Migrations\20180626135254_addSecondBatchForm.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Views\Home\FinanceHome.cshtml" />
+    <Content Remove="Views\Shared\_FinanceLayout.cshtml" />
+    <Content Remove="wwwroot\js\Production\supervisor-request-list - Copy.js" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="1.1.2" />
+    <PackageReference Include="iTextSharp" Version="5.5.13" />
+    <PackageReference Include="Microsoft.AspNetCore.All" Version="2.0.5" />
+    <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0-preview2-final" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.0.1" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="2.0.2" PrivateAssets="All" />
+    <PackageReference Include="NReco.PdfGenerator.LT" Version="1.1.17" />
+    <PackageReference Include="X.PagedList.Mvc.Core" Version="7.2.4" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.DotNet" Version="2.0.1" />
+    <DotNetCliToolReference Include="Microsoft.Extensions.SecretManager.Tools" Version="2.0.0" />
+    <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="Views\Account\AccessDenied.cshtml" />
+    <None Include="Views\Account\ConfirmEmail.cshtml" />
+    <None Include="Views\Account\ExternalLogin.cshtml" />
+    <None Include="Views\Account\ForgotPassword.cshtml" />
+    <None Include="Views\Account\ForgotPasswordConfirmation.cshtml" />
+    <None Include="Views\Account\Lockout.cshtml" />
+    <None Include="Views\Account\Login.cshtml" />
+    <None Include="Views\Account\LoginWith2fa.cshtml" />
+    <None Include="Views\Account\LoginWithRecoveryCode.cshtml" />
+    <None Include="Views\Account\Register.cshtml" />
+    <None Include="Views\Account\ResetPassword.cshtml" />
+    <None Include="Views\Account\ResetPasswordConfirmation.cshtml" />
+    <None Include="Views\Account\SignedOut.cshtml" />
+    <None Include="Views\Home\About.cshtml" />
+    <None Include="Views\Home\Contact.cshtml" />
+    <None Include="Views\Home\Index.cshtml" />
+    <None Include="Views\Manage\ChangePassword.cshtml" />
+    <None Include="Views\Manage\Disable2fa.cshtml" />
+    <None Include="Views\Manage\EnableAuthenticator.cshtml" />
+    <None Include="Views\Manage\ExternalLogins.cshtml" />
+    <None Include="Views\Manage\GenerateRecoveryCodes.cshtml" />
+    <None Include="Views\Manage\Index.cshtml" />
+    <None Include="Views\Manage\ResetAuthenticator.cshtml" />
+    <None Include="Views\Manage\SetPassword.cshtml" />
+    <None Include="Views\Manage\ShowRecoveryCodes.cshtml" />
+    <None Include="Views\Manage\TwoFactorAuthentication.cshtml" />
+    <None Include="Views\Manage\_Layout.cshtml" />
+    <None Include="Views\Manage\_ManageNav.cshtml" />
+    <None Include="Views\Manage\_StatusMessage.cshtml" />
+    <None Include="Views\Manage\_ViewImports.cshtml" />
+    <None Include="Views\Shared\Error.cshtml" />
+    <None Include="Views\Shared\_Layout.cshtml" />
+    <None Include="Views\Shared\_LoginPartial.cshtml" />
+    <None Include="Views\Shared\_ValidationScriptsPartial.cshtml" />
+    <None Include="Views\_ViewImports.cshtml" />
+    <None Include="Views\_ViewStart.cshtml" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\css\bootstrap-grid.css.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\css\bootstrap-grid.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\css\bootstrap-reboot.css.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\css\bootstrap-reboot.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\css\bootstrap.css.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\css\bootstrap.min.css.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\js\bootstrap.bundle.js" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\js\bootstrap.bundle.js.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\js\bootstrap.bundle.min.js" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\js\bootstrap.bundle.min.js.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\js\bootstrap.js" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\js\bootstrap.js.map" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\js\bootstrap.min.js" />
+    <None Include="wwwroot\lib\bootstrap-4.1.1-dist\js\bootstrap.min.js.map" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Views\Communication\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="Views\Account\ChangePassword.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\AuditInfo\_VersionCompare.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Customer\_CustomerContacts.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Customer\_CustomerContactForm.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Customer\_CustomerForm.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Finance\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Finance\_PremiumCalculator.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Loan\Index.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Document\UploadDocuments.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Loan\LoanApplication.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Loan\_LoanForm.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+    <Content Update="Views\Shared\_LayoutPregnancy.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
+  </ItemGroup>
+
+</Project>

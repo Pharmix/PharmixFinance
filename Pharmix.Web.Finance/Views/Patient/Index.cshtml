@@ -1,0 +1,109 @@
+﻿@model SearchViewModel
+
+@{
+    ViewData["Title"] = "Patient Dashboard";
+}
+
+<div class="form-horizontal">
+    <div class="">
+        <div class="pharmix-page-title">  Patients Dashboard</div>
+    
+        <div class="form-group panel panel-default panel-body">
+            <div class="col-sm-6">
+                @Html.DisplayFor(m => m)
+            </div>
+            <div class="col-sm-6" style="position: relative">
+                <div class="pull-right">
+                    <a class="btn btn-danger" asp-action="Create"><i class="fa fa-plus"></i> Create New</a>
+                    <a class="btn btn-primary" herf="#" data-toggle="collapse" data-target="#divBulkUpload"><i class="fa fa-users"></i> Patients Bulk Upload </a>
+                </div>
+
+                <div id="divBulkUpload" style="position: absolute; width: 80%; top: 35px; right: 15px" class="collapse panel panel-primary panel-body">
+                    <form method="post" enctype="multipart/form-data" asp-controller="Patient" asp-action="BulkUploadPatients">
+                        <input type="file" class="form-control" name="file" id="fileUploadPats" accept=".csv" required/>
+                        <div class="text-right" style="position: relative">
+                            <span class="full-opacity-hover">.csv</span>
+                            <span class="fa fa-info-circle text-info" title="Click to view file template" data-toggle="collapse" data-target="#divSampleFile"></span>
+                            <div id="divSampleFile" style="position: absolute; top: 20px; right: 5px" class="collapse panel panel-info panel-body text-center">
+                                <img src="~/assets-themes/img/patients-file-sample.jpg" width="500" alt="Sample data"/>
+                                <div>* These columns must be presented in any order</div>
+                                <a class="btn btn-danger" href="javascript:void(0)" data-toggle="collapse" data-target="#divSampleFile">OK</a>
+                            </div>
+                        </div>
+                        <span class="text-danger" id="spanErrorMsg"></span>
+                        <br/>
+
+                        <a class="btn btn-primary" href="javascript:void(0)" id="linkBulkUpload"><i class="fa fa-upload"></i> Upload</a>
+                        <a class="btn btn-danger" href="javascript:void(0)" data-toggle="collapse" data-target="#divBulkUpload">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="divPatientGrid"></div>
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#SearchText").on("input", function () {
+            $("#linkSearch").trigger("click");
+        });
+
+        $("#linkSearch").click(function () {
+            var callback = function (response) {
+                $("#divPatientGrid").html(response);
+            };
+
+            var searchText = $("#SearchText").val();
+
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("Search")", { Page: 1, SearchText: searchText }, callback);
+            return false;
+        });
+        
+        setTimeout(function () {
+            $("#linkSearch").trigger("click");
+        }, 200);
+
+        $("#linkBulkUpload").click(function () {
+            var form = $(this).closest("form")[0];
+            var formData = new FormData(form);
+            
+            if (formData.get("file").size <= 0) {
+                $("#spanErrorMsg").text("Please choose a valid .csv file.");
+                return false;
+            }
+            $("#spanErrorMsg").text();
+
+            var callback = function (response) {
+                if (response.IsSuccess) {
+                    $("#divBulkUpload").removeClass("in");
+                    toastr.success(response.Message);
+                    $("#linkSearch").trigger("click");
+                    form.reset();
+                } else {
+                    toastr.error(response.Message);
+                    $("#spanErrorMsg").text(response.Message);
+                }
+            };
+
+            Framework.Spinner.Start(null, 200);
+            $.ajax({
+                url: "@Url.Action("BulkUploadPatients")",
+                type: 'POST',
+                data: formData,
+                async: false,
+                cache: false,
+                contentType: false,
+                enctype: 'multipart/form-data',
+                processData: false,
+                success: function (response) {
+                    Framework.Spinner.Stop();
+                    callback(response);
+                }
+            });
+            
+            return false;
+        });
+    });
+    
+</script>

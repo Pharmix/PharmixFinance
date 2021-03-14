@@ -1,0 +1,104 @@
+﻿@model Pharmix.Web.Models.PatientViewModel.EmergencyContactViewModel
+
+@{
+    Layout = "_LayoutPregnancy";
+    ViewData["PatientId"] = Model.PatientId;
+    ViewBag.Title = "Patient Info";
+}
+
+@if (Model.IsAdmin)
+{
+    <form id="formUser" asp-action="EmergencyContact" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PatientId" />
+        <input type="hidden" asp-for="PregnancyId" />
+        <input type="hidden" asp-for="Id" />
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="form-group text-center">
+                    <button type="submit" id="btnSaveUser" class="btn btn-sm btn-success">Save All Changes</button>
+                    <button type="reset" id="btnCancelUser" class="btn btn-sm btn-danger">Cancel</button>
+                </div>
+                <hr />
+            </div>
+            <div class="col-sm-6 form-horizontal">
+                <div class="form-group">
+                    <label asp-for="Name" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Address" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="Address" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Address" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-6 form-horizontal">
+                <div class="form-group">
+                    <label asp-for="PhoneNumber1" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="PhoneNumber1" class="form-control" />
+                    </div>
+                    <span asp-validation-for="PhoneNumber1" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PhoneNumber2" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="PhoneNumber2" class="form-control" />
+                    </div>
+                    <span asp-validation-for="PhoneNumber2" class="text-danger"></span>
+                </div>
+            </div>
+        </div>
+
+    </form>
+}
+else
+{
+
+    <div class="row">
+        <div class="col-sm-6 form-horizontal">
+            <div class="form-group">
+                <label asp-for="Name" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.Name
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.Address
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 form-horizontal">
+            <div class="form-group">
+                <label asp-for="PhoneNumber1" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.PhoneNumber1
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber2" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.PhoneNumber2
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

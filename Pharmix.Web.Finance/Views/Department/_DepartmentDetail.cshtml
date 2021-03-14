@@ -1,0 +1,70 @@
+﻿@model Pharmix.Web.Models.DepartmentViewModels.DepartmentViewModel
+
+<div class="col-sm-12">
+    <form id="formDept">
+        @Html.AntiForgeryToken()
+
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="DepartmentId" />
+
+        @if (Model.IsPharmixAdminRequest)
+        {
+            <div class="form-group">
+                <label asp-for="TrustId" class="control-label">* Trust</label>
+                @Html.DropDownListFor(m => m.TrustId, Model.TrustList, "- Select Trust -", new { @class = "form-control" })
+                <span asp-validation-for="TrustId" id="spnTrustId" class="text-danger"></span>
+            </div>
+        }
+        else
+        {
+            <input type="hidden" asp-for="TrustId" />
+        }
+
+        <div class="form-group">
+            <label asp-for="DepartmentName" class="control-label">* Department Name</label>
+            <input asp-for="DepartmentName" class="form-control" />
+            <span asp-validation-for="DepartmentName"  id="spnDepartmentName" class="text-danger"></span>
+        </div>
+        <div class="clearfix"></div>
+        <div class="form-group">
+            <label asp-for="Description" class="control-label">Description</label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <hr />
+        <div class="form-group text-center">
+            <button type="button" id="btnSaveDept" class="btn btn-success">Save</button>
+            <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Cancel</button>
+        </div>
+    </form>
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+<script>
+    //$("#formDept #TrustId").attr("data-placeholder", "- Select staff -").chosen({ width: "100%" });
+
+    $("#btnSaveDept").click(function () {
+        var callbackSave = function (response) {
+            if (response.IsSuccess) {
+                $("#linkSearch").trigger("click");
+                $("#formDept").closest(".modal").modal("hide");
+                toastr.success("Department has been saved successfully.");
+                return;
+            } else if (response.IsModelError) {
+                $("#formDept #spn"+ response.Field +"").text(response.Message);
+            } else {
+                toastr.error("Department save has failed.");
+            }
+        };
+
+        if ($("#formDept").valid()) {
+            var request = $("#formDept").serialize();
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("Save", "Department")", request, callbackSave);
+        }
+
+        return false;
+    });
+</script>

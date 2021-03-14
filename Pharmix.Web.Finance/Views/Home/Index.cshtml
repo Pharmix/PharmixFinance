@@ -1,0 +1,69 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@*<hr />*@
+
+@*@if (User.IsInRole("IsoSupervisor") || User.IsInRole("SuperAdmin"))
+    {
+        @Html.Partial("_IsolatorAdminIndex")
+    }
+
+    @if (User.IsInRole("IsoUser") || User.IsInRole("SuperAdmin"))
+    {
+        @Html.Partial("_IsolatorUserIndex")
+    }*@
+
+<div class="box">
+    <div class="box-header">
+        <h1>Welcome to</h1>
+        <h3 class="box-title">APPOINTMENT SCHEDULER</h3>
+    </div>
+</div>
+
+@if (User.IsInRole("TrustAdmin") || ViewBag.IsPharmixAdmin)
+{
+    @Html.Partial(("_TrustAdminIndex"))
+}
+
+@if (User.IsInRole("Staff"))
+{
+    <div class="row">
+        <div class="col-sm-4">
+            <a class="card" asp-action="Index" asp-controller="Scheduler" title="Click to enter">
+                <span class="fa fa-calendar fa-3x text-danger"></span>&nbsp;
+                Manage Appointments
+                <div class="card-body">
+                    <h4><b>Appointments</b></h4>
+                    <p>Schedule, cancel and view audit history</p>
+                </div>
+            </a>
+        </div>
+    </div>
+}
+
+@if (User.IsInRole("PatientAdmin"))
+{
+    <div class="row">
+        <div class="col-sm-4">
+            <a class="card" asp-action="Index" asp-controller="Patient" title="Click to enter">
+                <span class="fa fa-users fa-3x text-primary"></span>&nbsp;
+                Manage Patients
+                <div class="card-body">
+                    <h4><b>Patients</b></h4>
+                    <p>Create, update and view</p>
+                </div>
+            </a>
+        </div>
+        <div class="col-sm-4">
+            <a class="card" asp-action="Index" asp-controller="Scheduler" title="Click to enter">
+                <span class="fa fa-calendar fa-3x text-danger"></span>&nbsp;
+                Manage Appointments
+                <div class="card-body">
+                    <h4><b>Appointments</b></h4>
+                    <p>Schedule, cancel and view audit history</p>
+                </div>
+            </a>
+        </div>
+    </div>
+}

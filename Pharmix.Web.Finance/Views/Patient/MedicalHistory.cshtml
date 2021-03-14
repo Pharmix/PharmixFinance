@@ -1,0 +1,1596 @@
+﻿@model Pharmix.Web.Models.PatientViewModel.MedicalHistoryViewModel
+
+@{
+    Layout = "_LayoutPregnancy";
+    ViewData["PatientId"] = Model.PatientId;
+    ViewBag.Title = "Patient Info";
+}
+
+@if (Model.IsAdmin)
+{
+    <form id="formUser" asp-action="MedicalHistory" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PatientId" />
+        <input type="hidden" asp-for="PregnancyId" />
+        <input type="hidden" asp-for="Id" />
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+    <div class="row">
+       
+    <div class="col-xs-12">
+    <div class="box">
+        
+        <div class="box-header">
+            <div class="col-sm-12">
+                <div class="form-group text-center">
+                    <a href="/" class="btn btn-sm btn-danger"><b class="fa fa-home"></b></a>
+                    <button type="submit" id="btnSaveUser" class="btn btn-sm btn-success">Save All Changes</button>
+                    <a href="@Url.Action("Index","Patient")" class="btn btn-sm btn-danger">Back</a>
+                </div>
+            </div>
+            <h3 class="box-title">Medical History</h3>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="ITUorHDU" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="ITUorHDU" type="radio" value="true" /> Yes
+                    <input asp-for="ITUorHDU" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="ITUorHDU" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="ITUorHDUDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="ITUorHDUDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="AandE" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="AandE" type="radio" value="true" /> Yes
+                    <input asp-for="AandE" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="AandE" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="AandEDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="AandEDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="AnaestheticProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="AnaestheticProblem" type="radio" value="true" /> Yes
+                    <input asp-for="AnaestheticProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="AnaestheticProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="AnaestheticProblemDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="AnaestheticProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="Allergies" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="Allergies" type="radio" value="true" /> Yes
+                    <input asp-for="Allergies" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="Allergies" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="AllergiesDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="AllergiesDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="AsthmaChestProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="AsthmaChestProblem" type="radio" value="true" /> Yes
+                    <input asp-for="AsthmaChestProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="AsthmaChestProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label asp-for="AsthmaChestProblemDetail" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10 control-label" style="text-align: left;">
+                    <input asp-for="AsthmaChestProblemDetail" type="radio" value="Mild" /> Mild
+                    <input asp-for="AsthmaChestProblemDetail" type="radio" value="Moderate" /> Moderate
+                    <input asp-for="AsthmaChestProblemDetail" type="radio" value="Severe" /> Severe
+                    <input asp-for="AsthmaChestProblemDetail" type="radio" value="Brittle" /> Brittle
+                </div>
+                <span asp-validation-for="AsthmaChestProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="AutoimmuneDisease" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="AutoimmuneDisease" type="radio" value="true" /> Yes
+                    <input asp-for="AutoimmuneDisease" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="AutoimmuneDisease" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="AutoimmuneDiseaseDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="AutoimmuneDiseaseDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="BackProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="BackProblem" type="radio" value="true" /> Yes
+                    <input asp-for="BackProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="BackProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="BackProblemDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="BackProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="BloodClottingDisorder" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="BloodClottingDisorder" type="radio" value="true" /> Yes
+                    <input asp-for="BloodClottingDisorder" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="BloodClottingDisorder" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="BloodClottingDisorderDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="BloodClottingDisorderDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="BloodTransfution" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="BloodTransfution" type="radio" value="true" /> Yes
+                    <input asp-for="BloodTransfution" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="BloodTransfution" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="BloodTransfutionDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="BloodTransfutionDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="Cancer" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="Cancer" type="radio" value="true" /> Yes
+                    <input asp-for="Cancer" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="Cancer" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="CancerDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="CancerDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="CervicalSmear" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="CervicalSmear" type="radio" value="true" /> Yes
+                    <input asp-for="CervicalSmear" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="CervicalSmear" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label asp-for="CervicalSmearDate" class="col-sm-4 control-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="CervicalSmearDate" class="form-control" />
+                </div>
+                <span asp-validation-for="CancerDetail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label asp-for="CervicalSmearResult" class="col-sm-4 control-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="CervicalSmearResult" class="form-control" />
+                </div>
+                <span asp-validation-for="CervicalSmearResult" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="Diabetes" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="Diabetes" type="radio" value="true" /> Yes
+                    <input asp-for="Diabetes" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="Diabetes" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="DiabetesDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="DiabetesDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="EpilepsyNeurogicalProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="EpilepsyNeurogicalProblem" type="radio" value="true" /> Yes
+                    <input asp-for="EpilepsyNeurogicalProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="EpilepsyNeurogicalProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label asp-for="OnEpilepsyNeurogicalProblemMedication" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="OnEpilepsyNeurogicalProblemMedication" type="radio" value="true" /> Yes
+                    <input asp-for="OnEpilepsyNeurogicalProblemMedication" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="OnEpilepsyNeurogicalProblemMedication" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="ExposureToxicSubstance" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="ExposureToxicSubstance" type="radio" value="true" /> Yes
+                    <input asp-for="ExposureToxicSubstance" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="ExposureToxicSubstance" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="ExposureToxicSubstance" class="form-control" />
+                </div>
+                <span asp-validation-for="ExposureToxicSubstance" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="FertilityProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="FertilityProblem" type="radio" value="true" /> Yes
+                    <input asp-for="FertilityProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="FertilityProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="FertilityProblemDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="FertilityProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="FemaleCircumcision" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="FemaleCircumcision" type="radio" value="true" /> Yes
+                    <input asp-for="FemaleCircumcision" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="FemaleCircumcision" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="FemaleCIrcumcisionDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="FemaleCIrcumcisionDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="GastroIntestinalProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="GastroIntestinalProblem" type="radio" value="true" /> Yes
+                    <input asp-for="GastroIntestinalProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="GastroIntestinalProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="GastroIntestinalProblemDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="GastroIntestinalProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="GeneticInheritedDisorder" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="GeneticInheritedDisorder" type="radio" value="true" /> Yes
+                    <input asp-for="GeneticInheritedDisorder" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="GeneticInheritedDisorder" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="GeneticInheritedDisorderDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="GeneticInheritedDisorderDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="GenitalInfection" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="GenitalInfection" type="radio" value="true" /> Yes
+                    <input asp-for="GenitalInfection" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="GenitalInfection" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="GenitalInfectionDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="GenitalInfectionDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="GynaeHistory" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="GynaeHistory" type="radio" value="true" /> Yes
+                    <input asp-for="GynaeHistory" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="GynaeHistory" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="GynaeHistoryDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="GynaeHistoryDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="HeartProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="HeartProblem" type="radio" value="true" /> Yes
+                    <input asp-for="HeartProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="HeartProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="HeartProblemDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="HeartProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="HighBloodPreassure" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="HighBloodPreassure" type="radio" value="true" /> Yes
+                    <input asp-for="HighBloodPreassure" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="HighBloodPreassure" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="HighBloodPreassureDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="HighBloodPreassureDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="Incontinence" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="Incontinence" type="radio" value="true" /> Yes
+                    <input asp-for="Incontinence" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="Incontinence" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="IncontinenceDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="IncontinenceDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="Infection" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="Infection" type="radio" value="true" /> Yes
+                    <input asp-for="Infection" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="Infection" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="InfectionDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="InfectionDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="KidneyUrinaryProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="KidneyUrinaryProblem" type="radio" value="true" /> Yes
+                    <input asp-for="KidneyUrinaryProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="KidneyUrinaryProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="KidneyUrinaryProblemDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="KidneyUrinaryProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="LiverDiseas" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="LiverDiseas" type="radio" value="true" /> Yes
+                    <input asp-for="LiverDiseas" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="LiverDiseas" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label asp-for="LiverDiseasLevel" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10 control-label" style="text-align: left;">
+                    <input asp-for="LiverDiseasLevel" type="radio" value="Mild" /> Mild
+                    <input asp-for="LiverDiseasLevel" type="radio" value="Moderate" /> Moderate
+                    <input asp-for="LiverDiseasLevel" type="radio" value="Severe" /> Severe
+                    <input asp-for="LiverDiseasLevel" type="radio" value="Brittle" /> Brittle
+                </div>
+                <span asp-validation-for="LiverDiseasLevel" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="MigraineSevereHeadache" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="MigraineSevereHeadache" type="radio" value="true" /> Yes
+                    <input asp-for="MigraineSevereHeadache" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="MigraineSevereHeadache" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="MigraineSevereHeadacheDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="MigraineSevereHeadacheDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="MusculoSkeletalProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="MusculoSkeletalProblem" type="radio" value="true" /> Yes
+                    <input asp-for="MusculoSkeletalProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="MusculoSkeletalProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="MusculoSkeletalProblemDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="MusculoSkeletalProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="Operations" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="Operations" type="radio" value="true" /> Yes
+                    <input asp-for="Operations" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="Operations" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="OperationsDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="OperationsDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="PelvicInjury" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="PelvicInjury" type="radio" value="true" /> Yes
+                    <input asp-for="PelvicInjury" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="PelvicInjury" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="PelvicInjuryDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="PelvicInjuryDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="SickleCellThalassaemia" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="SickleCellThalassaemia" type="radio" value="true" /> Yes
+                    <input asp-for="SickleCellThalassaemia" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="SickleCellThalassaemia" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="SickleCellThalassaemiaDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="SickleCellThalassaemiaDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="TBExposur" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="TBExposur" type="radio" value="true" /> Yes
+                    <input asp-for="TBExposur" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="TBExposur" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="TBExposurDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="TBExposurDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="Thrombosis" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="Thrombosis" type="radio" value="true" /> Yes
+                    <input asp-for="Thrombosis" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="Thrombosis" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="ThrombosisDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="ThrombosisDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="ThyroidEndocrineProblem" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="ThyroidEndocrineProblem" type="radio" value="true" /> Yes
+                    <input asp-for="ThyroidEndocrineProblem" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="ThyroidEndocrineProblem" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="ThyroidEndocrineProblemDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="ThyroidEndocrineProblemDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="MedicationLastSixMonth" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="MedicationLastSixMonth" type="radio" value="true" /> Yes
+                    <input asp-for="MedicationLastSixMonth" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="MedicationLastSixMonth" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="MedicationLastSixMonthDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="MedicationLastSixMonthDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="VaginalBleeding" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="VaginalBleeding" type="radio" value="true" /> Yes
+                    <input asp-for="VaginalBleeding" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="VaginalBleeding" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="VaginalBleedingDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="VaginalBleedingDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="Other" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="Other" type="radio" value="true" /> Yes
+                    <input asp-for="Other" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="Other" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="OtherDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="OtherDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="FolicAcidTablet" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="FolicAcidTablet" type="radio" value="true" /> Yes
+                    <input asp-for="FolicAcidTablet" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="FolicAcidTablet" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label asp-for="FolicAcidTabletDate" class="col-sm-4 control-label"></label>
+                <div class="col-sm-8">
+                    <input asp-for="FolicAcidTabletDate" class="form-control" />
+                </div>
+                <span asp-validation-for="OtherDetail" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <div class="col-sm-5 control-label" style="text-align: left;">
+                    @{
+                        var pointFour = "0.4 mg";
+                        var five = "5 mg";
+                    }
+                    @if(Model.FolicAcidTabletDose == (float)0.4)
+                    {
+                        <input asp-for="FolicAcidTabletDose" type="radio" value="4" checked/> @pointFour
+                        <input asp-for="FolicAcidTabletDose" type="radio" value="5" /> @five
+                    }else if(Model.FolicAcidTabletDose == 5)
+                    {
+                        <input asp-for="FolicAcidTabletDose" type="radio" value="4" /> @pointFour
+                        <input asp-for="FolicAcidTabletDose" type="radio" value="5" checked/> @five
+                    }
+                    else
+                    {
+                        <input asp-for="FolicAcidTabletDose" type="radio" value="4" /> @pointFour
+                        <input asp-for="FolicAcidTabletDose" type="radio" value="5" /> @five
+                    }
+
+                </div>
+                <label asp-for="FolicAcidTabletDoseChanged" class="col-sm-4 control-label"></label>
+                <div class="col-sm-3 control-label" style="text-align: left;">
+                    @{
+                        var yes = "Yes";
+                        var no = "No";
+                    }
+                    @if(Model.FolicAcidTabletDoseChanged == null)
+                    {
+                        <input asp-for="FolicAcidTabletDoseChanged" type="radio" value="Yes"/> @yes
+                        <input asp-for="FolicAcidTabletDoseChanged" type="radio" value = "No" /> @no
+                    }
+                    else if(Model.FolicAcidTablet == false)
+                    {
+                        <input asp-for="FolicAcidTabletDoseChanged" type="radio" value="Yes" /> @yes
+                        <input asp-for="FolicAcidTabletDoseChanged" type="radio" value = "No" checked/> @no
+                    }
+                    else
+                    {
+                        <input asp-for="FolicAcidTabletDoseChanged" type="radio" value="Yes" checked/> @yes
+                        <input asp-for="FolicAcidTabletDoseChanged" type="radio" value = "No" /> @no
+                    }
+                </div>
+                <span asp-validation-for="FolicAcidTabletDoseChanged" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+    <div class="row form form-horizontal">
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label asp-for="PhysicalExamination" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    <input asp-for="PhysicalExamination" type="radio" value="true" /> Yes
+                    <input asp-for="PhysicalExamination" type="radio" value="false" /> No
+                </div>
+                <span asp-validation-for="PhysicalExamination" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="form-group">
+                <div class="col-sm-12">
+                    <input asp-for="PhysicalExaminationDetail" class="form-control" />
+                </div>
+                <span asp-validation-for="PhysicalExaminationDetail" class="text-danger"></span>
+            </div>
+        </div>
+    </div>
+            
+    </div>
+    </div>
+    </form>
+}
+else
+{
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Medical History</h3>
+        </div>
+    </div>
+    <div class="row">
+        
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="ITUorHDU" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.ITUorHDU ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.ITUorHDUDetail) ? "-" : Model.ITUorHDUDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="AandE" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.AandE ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.AandEDetail) ? "-" : Model.AandEDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="AnaestheticProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.AnaestheticProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.AnaestheticProblemDetail) ? "-" : Model.AnaestheticProblemDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="Allergies" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.Allergies ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.AllergiesDetail) ? "-" : Model.AllergiesDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="AsthmaChestProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.AsthmaChestProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label asp-for="AsthmaChestProblemDetail" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10 control-label" style="text-align: left;">
+                        @(string.IsNullOrEmpty(Model.AsthmaChestProblemDetail) ? "-" : Model.AsthmaChestProblemDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="AutoimmuneDisease" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.AutoimmuneDisease ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.AutoimmuneDiseaseDetail) ? "-" : Model.AutoimmuneDiseaseDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="BackProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.BackProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.BackProblemDetail) ? "-" : Model.BackProblemDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="BloodClottingDisorder" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.BloodClottingDisorder ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.BloodClottingDisorderDetail) ? "-" : Model.BloodClottingDisorderDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="BloodTransfution" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.BloodTransfution ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.BloodTransfutionDetail) ? "-" : Model.BloodTransfutionDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="Cancer" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.Cancer ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.CancerDetail) ? "-" : Model.CancerDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="CervicalSmear" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.CervicalSmear ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label asp-for="CervicalSmearDate" class="col-sm-4 control-label"></label>
+                    <div class="col-sm-8">
+                        @(Model.CervicalSmearDate == null ? "-" : ((DateTime)Model.CervicalSmearDate).ToString("dd/MM/yyyy"))
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label asp-for="CervicalSmearResult" class="col-sm-4 control-label"></label>
+                    <div class="col-sm-8">
+                        @(string.IsNullOrEmpty(Model.CervicalSmearResult) ? "-" : Model.CancerDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="Diabetes" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.Diabetes ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.DiabetesDetail) ? "-" : Model.DiabetesDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="EpilepsyNeurogicalProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.EpilepsyNeurogicalProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label asp-for="OnEpilepsyNeurogicalProblemMedication" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.OnEpilepsyNeurogicalProblemMedication ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="ExposureToxicSubstance" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.ExposureToxicSubstance ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.ExposureToxicSubstanceDetail) ? "-" : Model.ExposureToxicSubstanceDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="FertilityProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.FertilityProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.FertilityProblemDetail) ? "-" : Model.FertilityProblemDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="FemaleCircumcision" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.FemaleCircumcision ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.FemaleCIrcumcisionDetail) ? "-" : Model.FemaleCIrcumcisionDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="GastroIntestinalProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.GastroIntestinalProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.GastroIntestinalProblemDetail) ? "-" : Model.GastroIntestinalProblemDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="GeneticInheritedDisorder" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.GeneticInheritedDisorder ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.GeneticInheritedDisorderDetail) ? "-" : Model.GeneticInheritedDisorderDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="GenitalInfection" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.GenitalInfection ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.GenitalInfectionDetail) ? "-" : Model.GenitalInfectionDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="GynaeHistory" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.GynaeHistory ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.GynaeHistoryDetail) ? "-" : Model.GynaeHistoryDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="HeartProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.HeartProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.HeartProblemDetail) ? "-" : Model.HeartProblemDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="HighBloodPreassure" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.HeartProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.HighBloodPreassureDetail) ? "-" : Model.HighBloodPreassureDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="Incontinence" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.Incontinence ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.IncontinenceDetail) ? "-" : Model.IncontinenceDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="Infection" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.Infection ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.InfectionDetail) ? "-" : Model.InfectionDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="KidneyUrinaryProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.KidneyUrinaryProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.KidneyUrinaryProblemDetail) ? "-" : Model.InfectionDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="LiverDiseas" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.LiverDiseas ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <label asp-for="LiverDiseasLevel" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10 control-label" style="text-align: left;">
+                        @(string.IsNullOrEmpty(Model.LiverDiseasLevel) ? "-" : Model.LiverDiseasLevel)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="MigraineSevereHeadache" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.MigraineSevereHeadache ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.MigraineSevereHeadacheDetail) ? "-" : Model.MigraineSevereHeadacheDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="MusculoSkeletalProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.MusculoSkeletalProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.MusculoSkeletalProblemDetail) ? "-" : Model.MusculoSkeletalProblemDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="Operations" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.Operations ? "yes" : "No")
+                    </div>
+                    <span asp-validation-for="Operations" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.OperationsDetail) ? "-" : Model.OperationsDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="PelvicInjury" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.PelvicInjury ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.PelvicInjuryDetail) ? "-" : Model.PelvicInjuryDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="SickleCellThalassaemia" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.SickleCellThalassaemia ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.SickleCellThalassaemiaDetail) ? "-" : Model.SickleCellThalassaemiaDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="TBExposur" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.TBExposur ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.TBExposurDetail) ? "-" : Model.TBExposurDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="Thrombosis" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.Thrombosis ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.ThrombosisDetail) ? "-" : Model.ThrombosisDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="ThyroidEndocrineProblem" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.ThyroidEndocrineProblem ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.ThyroidEndocrineProblemDetail) ? "-" : Model.ThyroidEndocrineProblemDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="MedicationLastSixMonth" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.MedicationLastSixMonth ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.MedicationLastSixMonthDetail) ? "-" : Model.MedicationLastSixMonthDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="VaginalBleeding" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.VaginalBleeding ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.VaginalBleedingDetail) ? "-" : Model.VaginalBleedingDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="Other" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.Other ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.OtherDetail) ? "-" : Model.OtherDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="FolicAcidTablet" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.FolicAcidTablet ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label asp-for="FolicAcidTabletDate" class="col-sm-4 control-label"></label>
+                    <div class="col-sm-8">
+                        @(Model.FolicAcidTabletDate == null ? "-" : ((DateTime)Model.FolicAcidTabletDate).ToString("dd/MM/yyyy"))
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <div class="col-sm-5 control-label" style="text-align: left;">
+                        @(Model.FolicAcidTabletDose == (float)0.4 ? "0.4 mg" : Model.FolicAcidTabletDose == 5 ? "5 mg" : "-")
+                    </div>
+                    <label asp-for="FolicAcidTabletDoseChanged" class="col-sm-4 control-label"></label>
+                    <div class="col-sm-3 control-label" style="text-align: left;">
+                        @(Model.FolicAcidTabletDoseChanged == null ? "-" : Model.FolicAcidTablet == false ? "No" : "Yes")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form form-horizontal">
+            <div class="col-sm-5">
+                <div class="form-group">
+                    <label asp-for="PhysicalExamination" class="col-sm-7 control-label"></label>
+                    <div class="col-sm-5">
+                        @(Model.PhysicalExamination ? "yes" : "No")
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        @(string.IsNullOrEmpty(Model.PhysicalExaminationDetail) ? "-" : Model.PhysicalExaminationDetail)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+}
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

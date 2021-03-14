@@ -1,0 +1,51 @@
+﻿@model Pharmix.Data.Entities.ViewModels.UserDepartmentsViewModel
+
+<form id="formUserDepts" class="form-horizontal col-sm-12">
+    <input type="hidden" asp-for="UserId" />
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">User Departments <sub class="full-opacity-hover">Checked are assigned departments</sub></div>
+    </div>
+    <div style="max-height: 500px" class="table-responsive">
+        @foreach (SelectListItem item in Model.DepartmentList)
+        {
+            <div class="col-sm-6">
+                <label>
+                    <input type="checkbox" name="UserDepartments" value="@item.Value" @(item.Selected? "checked":"") /> @item.Text
+                </label>
+            </div>
+        }
+        
+        @if (!Model.DepartmentList.Any())
+        {
+            <div class="no-result text-center text-danger">
+                <i class="fa fa-frown-o fa-2x" aria-hidden="true"></i>
+                <h4>No departments available in this system.</h4>
+            </div>
+        }
+    </div>
+    
+    <div class="clearfix"></div>
+    <hr />
+
+    <div class="text-center">
+        <button type="button" id="btnUpdateDepts" class="btn btn-primary">Update</button>
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Cancel</button>
+    </div>
+</form>
+
+<script>
+    $("#btnUpdateDepts").click(function() {
+        var callback = function (response) {
+            if (response.IsSuccess) {
+                toastr.success(response.Message);
+                $("#formUserDepts").closest(".modal").modal("hide");
+                return;
+            }
+            toastr.error(response.Message);
+        };
+
+        var reqData = $("#formUserDepts").serialize();
+        Framework.Utility.ExecuteAjaxRequest("@Url.Action("UpdateUserDepartments")", reqData, callback);
+    });
+</script>

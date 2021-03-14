@@ -1,0 +1,48 @@
+﻿
+    <div class="col-sm-12">
+        <div class="col-sm-12 col-md-6">
+            <div class="form-group">
+                <label class="control-label">Loan Amount</label>
+                <input type="text" class="form-control" id="dtLoanAmount" value="100000" />
+            </div>
+          
+            <div class="form-group">
+                <label for="dtLoanStart" class="control-label">Loan Start Date</label>
+                <input class="form-control ui-datepicker" id="dtLoanStart" name="LoanStart" type="date" value="01/07/2019"/>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label">Monthly Interest Rate</label>
+                <input type="text" class="form-control" id="dtMonthlyIinterest"  value="3"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Agreed Monthly Principal</label>
+                <input type="text" class="form-control" id="dtMonthlyPrincipal" value="10000"/>
+            </div>
+        </div>
+         
+            <div class="col-sm-12 col-md-6">
+                <div class="form-group">
+                    <label class="control-label">Estimated EMI</label>
+                    <input type="text" class="form-control" id="dtvEstimatedEmi" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Principal Paid so far</label>
+                    <input type="text" class="form-control" id="dtvPrincipal" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Outstanding Principal</label>
+                    <input type="text" class="form-control" id="dtvPrincipalTopay" />
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Estimated Finish date</label>
+                    <input type="text" class="form-control" id="dtvEstimatedFinishDate" />
+                </div>
+
+
+                <div class="form-group">
+                    <input type="button" value="Calculate" class="btn btn-success" onclick="updateEmi()"/>
+                </div>
+        
+        </div>
+    </div>

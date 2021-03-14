@@ -1,0 +1,100 @@
+﻿@model Pharmix.Web.Finance.Entities.ViewModels.Customer.DocumentViewModel
+
+@using Pharmix.Web.Finance.Entities.ViewModels.Customer
+@*
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>*@
+@{
+
+    string heading = Model.LoanId > 0 ? "Loan : " + Model.LoanViewModel?.Name : (Model.CustomerId > 0 ? "Customer : " + Model.CustomerViewModel?.Name : "");
+    List<DocumentViewModel> documentViewModelList = new List<DocumentViewModel>();
+    if (ViewBag.UploadedDocuments != null)
+    {
+        documentViewModelList = ViewBag.UploadedDocuments;
+    }
+    var customerId = TempData.ContainsKey("CustomerId") ? Convert.ToInt32(TempData["CustomerId"]) : 0;
+    if (TempData.ContainsKey("CustomerId"))
+    {
+        TempData.Keep("CustomerId");
+    }
+}
+
+<div class="panel panel-default">
+    <div class="panel-heading"><h3>@heading</h3></div>
+    <div class="panel-body">
+        <form id="frmUploadDocument" class="form-horizontal">
+            @Html.HiddenFor(m => m.Id)
+            @Html.HiddenFor(m => m.LoanId)
+            @Html.HiddenFor(m => m.CustomerId)
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Title</label>
+                <div class="col-sm-5">
+                    <input type="text" id="txtTitle" class="form-control" name="Title" placeholder="Title">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">File </label>
+                <div class="col-sm-5">
+                    <span class="btn btn-primary btn-file">
+                        <i class="fa fa-upload" aria-hidden="true"></i>Browse <input type="file" name="fileBrowse">
+                    </span>
+                    <span class="btn btn-primary btn-file hidden-lg">
+                        <i class="fa fa-upload" aria-hidden="true"></i>Open Camera <input type="file" accept="image/*;capture=camera">
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-5">
+                    <button type="button" id="btnUploadDocument" class="btn btn-success"><i class="fa fa-check" aria-hidden="true"></i>Save</button>
+                    <button type="button" id="btnCancelUpload" class="btn btn-warning"><i class="fa fa-close" aria-hidden="true"></i>Cancel</button>
+                </div>
+            </div>
+            @*<input type="file" accept="video/*;capture=camcorder">*@
+        </form>
+
+        <div class="col-sm-offset-2 col-sm-10">
+            <div id="uploadedDocumentsContainer">
+                @if (ViewBag.UploadedDocuments != null)
+                {
+                    Html.RenderPartial("_documents", documentViewModelList);
+
+                }
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script type="text/javascript">
+    $("#btnUploadDocument").click(function () {
+        var callbackSave = function (response) {
+            $('#uploadedDocumentsContainer').html(response);
+            $('#txtTitle').val('');
+                        //$("#linkSearch").trigger("click");
+                        //$("#formLoan").closest(".modal").modal("hide");
+                    };
+
+            //var request = $("#frmUploadDocument").serialize();
+        var request = new FormData($("#frmUploadDocument")[0]);
+
+        Framework.Utility.ExecuteAjaxRequestWithFile("@Url.Action("Upload")", request, callbackSave);
+                    //return false;
+    });
+
+    $('#btnCancelUpload').click(function () {
+        
+        if ('@Model.LoanId' > 0) {
+            if('@customerId'>0)
+                window.location.href = "/loan?customerId="+'@customerId';
+            else
+                window.location.href = "/loan";
+        }
+            
+        else if ('@Model.CustomerId' > 0)
+                window.location.href="/customer";
+
+
+    });
+</script>
+

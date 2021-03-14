@@ -1,0 +1,143 @@
+﻿@model Pharmix.Web.Models.SchedulerViewModels.AppointmentDetailViewModel
+@{
+    var aptDt = Model.AppointmentDateTime.ToString("D");
+    var aptTime = Model.AppointmentDateTime.ToString("HH:mm");
+}
+<form id="formAppointment" class="form-horizontal col-sm-12">
+    <input type="hidden" asp-for="AppointmentId" />
+    <input type="hidden" asp-for="EntityId" />
+    <input type="hidden" asp-for="DepartmentId" />
+    <input type="hidden" asp-for="AppointmentDateTime" />
+
+    <div class="panel panel-primary">
+        <div class="panel-heading">Appointment details</div>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-4">Appointment Date:</label>
+        <span class="col-sm-8 form-control-static">@aptDt</span>
+    </div>
+    <div class="form-group">
+        <label class="control-label col-sm-4">Appointment Time:</label>
+        <span class="col-sm-8 form-control-static">@aptTime</span>
+    </div>
+    @foreach (var prop in Model.DisplayProperties)
+    {
+        <div class="form-group">
+            <label class="control-label col-sm-4">@prop.Key:</label>
+            <span class="col-sm-8 form-control-static">@prop.Value</span>
+        </div>
+    }
+
+    <div class="col-sm-12">
+        @if (Model.AppointmentId > 0)
+        {
+            <div class="form-group ">
+                <label asp-for="AppointmentNotes" class="control-label">Appointment Notes:</label>
+                <p>@Model.AppointmentNotes</p>
+            </div>
+            <div class="form-group ">
+                <label asp-for="CancelNotes" class="control-label">Cancel Notes:</label>
+                @if (Model.IsModelEditable)
+                {
+                    <textarea asp-for="CancelNotes" class="form-control"></textarea>
+                }
+                else
+                {
+                    <p>@Model.CancelNotes</p>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="form-group ">
+                <label asp-for="AppointmentNotes" class="control-label">Appointment Notes:</label>
+                @if (Model.IsModelEditable)
+                {
+                    <textarea asp-for="AppointmentNotes" class="form-control"></textarea>
+                }
+                else
+                {
+                    <p>@Model.AppointmentNotes</p>
+                }
+            </div>
+                @*<div id="divRecurringContent" class="row" @(Model.IsRecurring ? "" : "style=display:none")>
+                        @Html.Partial("_CalendarRecurrence", Model.RecurrenceModel)
+                    </div>*@
+        }
+    </div>
+
+    <div class="clearfix"></div>
+
+    <div class="text-center modal-footer">
+        @if (Model.IsModelEditable)
+        {
+            if (Model.AppointmentId > 0)
+            {
+                <button type="button" id="btnCancelApp" class="btn btn-warning">Cancel Appointment</button>
+            }
+            else
+            {
+                <button type="button" id="btnCreateApp" class="btn btn-primary">Create Appointment</button>
+            }
+        }
+
+        <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Close</button>
+    </div>
+</form>
+
+<script>
+    $("#btnCreateApp").click(function() {
+        var callback = function () {
+            var refreshCalendar = function (response) {
+                if (response.IsSuccess) {
+                    toastr.success(response.Message);
+                    $("#divEntitySchGrid .small-box[data-entityid=" + $("#formAppointment #EntityId").val() + "]").remove();
+                    $("#divEntityScheduler .escDatesContainer .escDateBox.escDateBoxSelected:eq(0)").trigger("click");
+                    $("#formAppointment").closest(".modal").modal("hide");
+                    return;
+                }
+                toastr.error(response.Message);
+            };
+
+            var reqData = $("#formAppointment").serialize();
+            reqData.AppointmentDateTime = getStandardDate($("#formAppointment #AppointmentDateTime").val());
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("CreateAppointment")", reqData, refreshCalendar);
+        }
+
+        var msg = "You are about to <strong class='text-success'>book</strong> appointment on <b>@aptDt</b> at <b>@aptTime</b>. Click YES to proceed.";
+        Framework.Popup.CreateConfirmationPopup("Appointment Confirmation", msg, callback);
+    });
+
+    function getStandardDate(ukDateString) {
+        debugger;
+        if (ukDateString == null) return new Date().toString();
+        var date = ukDateString.split('/')[0];
+        var month = ukDateString.split('/')[1];
+        var year = ukDateString.split('/')[2].split(' ')[0];
+        var hour = ukDateString.split('/')[2].split(' ')[1].split(':')[0];
+        var min = ukDateString.split('/')[2].split(' ')[1].split(':')[1];
+        return new Date(year, month, date, hour, min);
+    }
+
+    $("#btnCancelApp").click(function () {
+        var performCancel = function() {
+            var callbackCancel = function (response) {
+                if (response.IsSuccess) {
+                    $("#divEntityScheduler .escDatesContainer .escDateBox.escDateBoxSelected:eq(0)").trigger("click");
+                    $("#divEntityResult #linkSearch").trigger("click");
+                    toastr.success(response.Message);
+                    $("#formAppointment").closest(".modal").modal("hide");
+                    return;
+                }
+
+                toastr.error(response.Message);
+            };
+
+            var request = $("#formAppointment").serialize();
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("CancelAppointment")", request, callbackCancel);
+        }
+
+        Framework.Popup.CreateConfirmationPopup("Cancel Appointment", "Are you sure want to cancel this appointment?", performCancel);
+        return false;
+    });
+</script>

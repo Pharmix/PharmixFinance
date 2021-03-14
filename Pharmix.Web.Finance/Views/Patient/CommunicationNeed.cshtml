@@ -1,0 +1,173 @@
+﻿@model Pharmix.Web.Models.PatientViewModel.CommunicationNeedViewModel
+
+@{
+    Layout = "_LayoutPregnancy";
+    ViewData["PatientId"] = Model.PatientId;
+    ViewBag.Title = "Patient Info";
+}
+
+@if (Model.IsAdmin)
+{
+    <form id="formUser" asp-action="CommunicationNeed" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PatientId" />
+        <input type="hidden" asp-for="Id" />
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+        <div class="row">
+
+            <div class="box">
+
+                <div class="box-header">
+                    <div class="col-sm-12">
+                        <div class="form-group text-center">
+                            <a href="/" class="btn btn-sm btn-danger"><b class="fa fa-home"></b></a>
+                            <button type="submit" id="btnSaveUser" class="btn btn-sm btn-success">Save All Changes</button>
+                            <a href="@Url.Action("Index","Patient")" class="btn btn-sm btn-danger">Back</a>
+                        </div>
+                    </div>
+                    <h3 class="box-title">Communication Needs</h3>
+                </div>
+            </div>
+            <div class="col-sm-6 form-horizontal">
+                <input type="hidden" asp-for="PatientId" />
+                <input type="hidden" asp-for="Id" />
+                <input type="hidden" asp-for="PregnancyId" />
+                <div class="form-group">
+                    <label asp-for="AssistanceRequired" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="AssistanceRequired" type="radio" value="true" /> Yes
+                        <input asp-for="AssistanceRequired" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="AssistanceRequired" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="SpeakEnglish" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="SpeakEnglish" type="radio" value="true" /> Yes
+                        <input asp-for="SpeakEnglish" type="radio" value="false" /> No
+                    </div>
+                    <span asp-validation-for="SpeakEnglish" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="PreferedLanguage" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="PreferedLanguage" class="form-control" />
+                    </div>
+                    <span asp-validation-for="PreferedLanguage" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-6 form-horizontal">
+                <div class="form-group">
+                    <label asp-for="AssistanceRequiredDetail" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="AssistanceRequiredDetail" class="form-control" />
+                    </div>
+                    <span asp-validation-for="AssistanceRequiredDetail" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="FirstLanguage" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="FirstLanguage" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FirstLanguage" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="InterpreterPhone" class="col-sm-5 control-label"></label>
+                    <div class="col-sm-7">
+                        <input asp-for="InterpreterPhone" class="form-control" />
+                    </div>
+                    <span asp-validation-for="InterpreterPhone" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="col-sm-12 form-horizontal">
+                <label asp-for="PreferredAssistance" class="col-sm-3 control-label"></label>
+                <div class="col-sm-7">
+                    <input asp-for="PreferredAssistance" class="form-control" />
+                </div>
+                <span asp-validation-for="PreferredAssistance" class="text-danger"></span>
+            </div>
+        </div>
+
+    </form>
+}
+else
+{
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Communication Need</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="AssistanceRequired" class="col-sm-5 control-label"></label>
+                <div class="col-sm-7">
+                    @{var AssistanceRequired = Model.AssistanceRequired ? "Yes" : "No";}
+                    @AssistanceRequired
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="AssistanceRequiredDetail" class="col-sm-7 control-label"></label>
+                <div class="col-sm-5">
+                    @Model.AssistanceRequiredDetail
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="PreferredAssistance" class="col-sm-5 control-label"></label>
+                <div class="col-sm-7">
+                    @Model.PreferredAssistance
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="SpeakEnglish" class="col-sm-5 control-label"></label>
+                <div class="col-sm-7">
+                    @{var SpeakEnglish = Model.SpeakEnglish ? "Yes" : "No";}
+                    @SpeakEnglish
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="form-group">
+                <label asp-for="FirstLanguage" class="col-sm-5 control-label"></label>
+                <div class="col-sm-7">
+                    @Model.FirstLanguage
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label asp-for="PreferedLanguage" class="col-sm-5 control-label"></label>
+                <div class="col-sm-7">
+                    @Model.PreferedLanguage
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="form-group">
+                <label asp-for="InterpreterPhone" class="col-sm-5 control-label"></label>
+                <div class="col-sm-7">
+                    @Model.InterpreterPhone
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

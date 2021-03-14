@@ -1,0 +1,157 @@
+﻿@model Pharmix.Web.Models.PatientViewModel.PregnancyViewModel
+
+@{
+    Layout = "_LayoutPregnancy";
+    ViewData["PatientId"] = Model.PatientId;
+    ViewBag.Title = "Patient Info";
+}
+
+@if (Model.IsAdmin)
+{
+    <form id="formUser" asp-action="Detail" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PatientId" />
+        <input type="hidden" asp-for="Id" />
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+        <div class="row">
+           
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-sm-12">
+                            <div class="form-group text-center">
+                                <a href="/" class="btn btn-sm btn-danger"><b class="fa fa-home"></b></a>
+                                <button type="submit" id="btnSaveUser" class="btn btn-sm btn-success">Save All Changes</button>
+                                <a href="@Url.Action("Index","Patient")" class="btn btn-sm btn-danger">Back</a>
+                            </div>
+                        </div>
+                        <h3 class="box-title">Patient Details</h3>
+                    </div>
+            </div>
+            <div class="col-sm-6 form-horizontal">
+                <div class="form-group">
+                    <label asp-for="FirstName" class="col-sm-2 control-label">First Name</label>
+                    <div class="col-sm-10">
+                        <input asp-for="FirstName" class="form-control" />
+                    </div>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Surname" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-10">
+                        <input asp-for="Surname" class="form-control" />
+                    </div>
+                    <span asp-validation-for="Surname" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="DateOfBirth" class="col-sm-2 control-label">Date Of Birth</label>
+                    <div class="col-sm-10">
+                        <input asp-for="DateOfBirth" class="form-control" />
+                    </div>
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
+            </div>
+                <div class="col-sm-6 form-horizontal">
+                    <div class="form-group">
+                        <label asp-for="GenderId" class="col-sm-2 control-label">Gender</label>
+                        <div class="col-sm-10">
+                            @Html.DropDownListFor(m => m.GenderId, Model.GenderList, "- Select Gender -", new { @class = "form-control" })
+                        </div>
+                        <span asp-validation-for="GenderId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="NHSNumber" class="col-sm-2 control-label">NHS Number</label>
+                        <div class="col-sm-10">
+                            <input asp-for="NHSNumber" class="form-control"/>
+                        </div>
+                        <span asp-validation-for="NHSNumber" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="PASNumber" class="col-sm-2 control-label">PAS Number</label>
+                        <div class="col-sm-10">
+                            <input asp-for="PASNumber" class="form-control"/>
+                        </div>
+                        <span asp-validation-for="PASNumber" class="text-danger"></span>
+                    </div>
+
+                    @*<div class="form-group">
+            <label asp-for="MaternityUnit" class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="MaternityUnit" class="form-control" />
+            </div>
+            <span asp-validation-for="MaternityUnit" class="text-danger"></span>
+        </div>
+        <div class="form-group">
+            <label asp-for="EDD" class="col-sm-2 control-label"></label>
+            <div class="col-sm-10">
+                <input asp-for="EDD" class="form-control" />
+            </div>
+            <span asp-validation-for="EDD" class="text-danger"></span>
+        </div>*@
+                </div>
+        </div>
+            </div>
+    </form>
+}
+else
+{
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Patient Details</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-6 form-horizontal">
+            <input type="hidden" asp-for="PatientId" />
+            <div class="form-group">
+                <label asp-for="FirstName" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.FirstName
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.Surname
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateOfBirth" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @(Model.DateOfBirth.HasValue? Model.DateOfBirth.Value.ToString("dd/MM/yyyy") : "N/A")
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6 form-horizontal">
+            <div class="form-group">
+                <label asp-for="GenderId" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.Gender
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="NHSNumber" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.NHSNumber
+                </div>
+            </div>
+            <div class="form-group">
+                <label asp-for="PASNumber" class="col-sm-2 control-label"></label>
+                <div class="col-sm-10">
+                    @Model.PASNumber
+                </div>
+            </div>
+
+        </div>
+    </div>
+    
+}
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

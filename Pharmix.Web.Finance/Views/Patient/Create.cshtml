@@ -1,0 +1,109 @@
+﻿@model Pharmix.Web.Models.PatientViewModel.PatientViewModel
+
+@{
+
+}
+
+<!-- Content Header (Page header) -->
+<section class="content-header">
+    <h1>
+        Create Patient
+        <small>Create new patient user</small>
+    </h1>
+    <ol class="breadcrumb">
+        <li><a href="#"><i class="fa fa-dashboard"></i> Patient</a></li>
+        @*<li><a href="#">Tables</a></li>*@
+        <li class="active">Create</li>
+    </ol>
+</section>
+<!-- Main content -->
+<section class="content">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                <div class="box-header">
+                </div>
+                <!-- /.box-header -->
+                <div class="box-body">
+                    <form id="formUser" asp-action="Create" method="post">
+                        @Html.AntiForgeryToken()
+
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div class="form-group">
+                            <label asp-for="IdNumber" class="control-label"></label>
+                            <input asp-for="IdNumber" class="form-control" />
+                            <span asp-validation-for="IdNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Email" class="control-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DOB" class="control-label"></label>
+                            <input asp-for="DOB" class="form-control" />
+                            <span asp-validation-for="DOB" class="text-danger"></span>
+                        </div>
+                        @*<div class="form-group">
+                            <label asp-for="Password" class="control-label"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="ConfirmPassword" class="control-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                        </div>*@
+                        <div class="form-group">
+                            <label asp-for="FirstName" class="control-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Surname" class="control-label"></label>
+                            <input asp-for="Surname" class="form-control" />
+                            <span asp-validation-for="Surname" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Phone" class="control-label"></label>
+                            <input asp-for="Phone" class="form-control" />
+                            <span asp-validation-for="Phone" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="GenderId" class="control-label">Gender</label>
+                            @Html.DropDownListFor(m => m.GenderId, Model.GenderList, "- Select Gender -", new { @class = "form-control" })
+                            <span asp-validation-for="GenderId" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="NHSNumber" class=" control-label">NHS Number</label>
+                            <input asp-for="NHSNumber" class="form-control" />
+                            <span asp-validation-for="NHSNumber" class="text-danger"></span>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="PASNumber" class="control-label">PAS Number</label>
+                            <input asp-for="PASNumber" class="form-control"/>
+                            <span asp-validation-for="PASNumber" class="text-danger"></span>
+                        </div>
+                        <div class="clearfix"></div>
+                        <hr />
+                        <div class="form-group text-center">
+                            <button type="submit" id="btnSaveUser" class="btn btn-success">Save</button>
+                            <a asp-action="Index" id="btnCancelUser" class="btn btn-danger">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+        <!-- /.col -->
+    </div>
+    <!-- /.row -->
+</section>
+<!-- /.content -->
+
+@section Scripts{
+        <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+        <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+        <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+    }

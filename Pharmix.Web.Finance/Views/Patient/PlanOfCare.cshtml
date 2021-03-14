@@ -1,0 +1,115 @@
+﻿@model Pharmix.Web.Models.PatientViewModel.MainPlanOfCareViewModel
+
+@{
+    Layout = "_LayoutPregnancy";
+    ViewData["PatientId"] = Model.PatientId;
+    ViewBag.Title = "Patient Info";
+}
+
+@if (Model.IsAdmin)
+{
+    <form id="formUser" asp-action="PlanOfCare" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="PatientId" />
+        <div class="row">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        </div>
+
+        <div class="row">
+
+            <div class="col-xs-12">
+                <div class="box">
+                    <div class="box-header">
+                        <div class="col-xs-12">
+                            <div class="form-group text-center">
+                                <a href="/" class="btn btn-sm btn-danger"><b class="fa fa-home"></b></a>
+                                <button type="submit" id="btnSaveUser" class="btn btn-sm btn-success">Save All Changes</button>
+                                <a href="@Url.Action("Index","Patient")" class="btn btn-sm btn-danger">Back</a>
+                            </div>
+                        </div>
+                        <h3 class="box-title">Plan Of Care</h3>
+
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body table-responsive no-padding">
+                        <table class="table table-hover">
+                            <tr>
+                                <th><label asp-for="PlanOfCareViewModel[0].CreatedDate"></label></th>
+                                <th><label asp-for="PlanOfCareViewModel[0].PlannedPlaceOfBirth"></label></th>
+                                <th><label asp-for="PlanOfCareViewModel[0].LeadProfessional"></label></th>
+                                <th><label asp-for="PlanOfCareViewModel[0].JobTitle"></label></th>
+                                <th><label asp-for="PlanOfCareViewModel[0].ReasonIfChanged"></label></th>
+                            </tr>
+                            @{
+                                int i = 0;
+                            }
+                            @foreach (var plan in Model.PlanOfCareViewModel)
+                            {
+                                <tr>
+                                    <td><input type="hidden" asp-for="PlanOfCareViewModel[i].Id" /><input asp-for="PlanOfCareViewModel[i].CreatedDate" class="form-control" /></td>
+                                    <td><input asp-for="PlanOfCareViewModel[i].PlannedPlaceOfBirth" class="form-control" /></td>
+                                    <td><input asp-for="PlanOfCareViewModel[i].LeadProfessional" class="form-control" /></td>
+                                    <td><input asp-for="PlanOfCareViewModel[i].JobTitle" class="form-control" /></td>
+                                    <td><input asp-for="PlanOfCareViewModel[i].ReasonIfChanged" class="form-control" /></td>
+                                </tr>
+                                i++;
+                            }
+
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+        </div>
+
+    </form>
+}
+else
+{
+    <div class="box">
+        <div class="box-header">
+            <h3 class="box-title">Plan Of Care</h3>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="box">
+                 
+                <!-- /.box-header -->
+                <div class="box-body table-responsive no-padding">
+                    <table class="table table-hover">
+                        <tr>
+                            <th><label asp-for="PlanOfCareViewModel[0].CreatedDate"></label></th>
+                            <th><label asp-for="PlanOfCareViewModel[0].PlannedPlaceOfBirth"></label></th>
+                            <th><label asp-for="PlanOfCareViewModel[0].LeadProfessional"></label></th>
+                            <th><label asp-for="PlanOfCareViewModel[0].JobTitle"></label></th>
+                            <th><label asp-for="PlanOfCareViewModel[0].ReasonIfChanged"></label></th>
+                        </tr>
+                        @foreach (var plan in Model.PlanOfCareViewModel)
+                        {
+                            if (plan.Id != 0)
+                            {
+                                <tr>
+                                    <td>@plan.CreatedDate</td>
+                                    <td>@plan.PlannedPlaceOfBirth</td>
+                                    <td>@plan.LeadProfessional</td>
+                                    <td>@plan.JobTitle</td>
+                                    <td>@plan.ReasonIfChanged</td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+                <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+        </div>
+    </div>
+}
+
+@section Scripts{
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation/dist/additional-methods.min.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+}

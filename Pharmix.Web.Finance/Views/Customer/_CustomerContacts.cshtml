@@ -1,0 +1,60 @@
+﻿@model List<Pharmix.Data.Entities.ViewModels.Customer.CustomerContactViewModel>
+@{
+    Layout = null;
+    bool isViewOnly = ViewBag.IsViewOnly ?? false;
+}
+<div class="col-sm-12">
+    <table class="table table-responsive" id="tblCustomerContacts">
+        <thead>
+            <tr>
+                <th>SNo</th>
+                @if (isViewOnly)
+                {
+                    <th>CustomerId</th>
+                }
+                <th>Name</th>
+                <th>Contact Number</th>
+                @if (!isViewOnly)
+                {
+                    <th></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null)
+            {
+                foreach (var item in Model.Select((x, idx) => new { CustomerViewModel = x, i = ++idx }))
+                {
+                    <tr>
+                        <td>@item.i</td>
+                        @if (isViewOnly)
+                        {
+                            <td>@item.CustomerViewModel.Id</td>
+                        }
+                        <td>@item.CustomerViewModel.Name</td>
+                        <td>@item.CustomerViewModel.ContactNumber</td>
+                        @if (!isViewOnly)
+                        {
+                            <td><button id="btnRemoveCustomerContact" class="button btn-danger" temp-id="@item.CustomerViewModel.TempId"><i class="fa fa-times" aria-hidden="true"></i></button></td>
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+</div>
+<button type="button" id="btnCloseCustomerContactPopup" class="btn btn-warning pull-right">Close</button>
+
+<script>
+    $(function () { 
+        $("body").on("click", "#btnCloseCustomerContactPopup", function () {
+            $('.spnAddedCustomerCount').html(addedCustomersCount);  
+            if ($(".modal-backdrop").length>1)
+                $(".modal-backdrop")[1].remove();
+            else
+                $(".modal-backdrop")[0].remove();
+            $('#tblCustomerContacts').parents(".modal").remove();
+        });
+
+    });
+</script>

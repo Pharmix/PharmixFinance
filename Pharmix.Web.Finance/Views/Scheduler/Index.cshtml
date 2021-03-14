@@ -1,0 +1,152 @@
+﻿@model Pharmix.Web.Models.SchedulerViewModels.SchedulerViewModel
+
+@{
+    ViewBag.Title = Model.Title;
+    Layout = "_Layout";
+}
+
+<section class="content-header" style="position: relative">
+    <div class="pharmix-page-title">   @Model.Title</div>
+    <h1>
+     &nbsp;&nbsp;<small><i class="fa fa-info-circle"></i>&nbsp;Drag and drop to schedule</small>
+        @if (Model.EnableIntervalConfig)
+        {
+            <a href="javascript:void(0);" id="linkShowInterval" title="Setup appointment interval"><small class="fa fa-cog text-info pull-right"></small></a>
+        }
+    </h1>
+</section>
+
+<hr />
+<div class="form-horizontal col-sm-3" id="divEntityResult">
+    <input id="hdnDraggedEntityId" value="0" type="hidden" />
+    <div class="row">
+        <label class="control-label">&nbsp;&nbsp;&nbsp;Filter by Date of birth</label>
+        <div class="sidebar-form">
+
+            <input class="form-control" type="date" id="textDobSearch" title="search by DOB" />
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.DisplayFor(m => m.EntitySearch)
+    </div>
+    <div id="divEntitySchGrid">Search Patients by Name or Date of Birth..</div>
+</div>
+
+<div class="col-sm-9">
+    <section>
+        <div class="form-group">
+            <label asp-for="DepartmentId">Department</label>
+            @Html.DropDownListFor(m => m.DepartmentId, Model.Departments, "- Choose Department -", new { @class="form-control" })
+        </div>
+        <div class="appointments">
+            <div class="scheduler-header">
+                <a title="Move to previous month" class="btn btn-default pull-left" id="linkPrevMonth" href="javascript:void(0)">
+                    <i class="fa fa-chevron-left"></i>
+                </a>
+                <span id="spnAppointmentTitle" class="h4" data-date="@DateTime.Now.ToString("yyyy-MM-01")">@DateTime.Now.ToString("MMMM, yyyy")</span>
+                <a title="Move to next month" class="btn btn-default pull-right" id="linkNextMonth" href="javascript:void(0)">
+                    <i class="fa fa-chevron-right"></i>
+                </a>
+                <a class="btn btn-default pull-right today" id="linkToday" href="javascript:void(0)">Today</a>
+                <div class="reset-div>"></div>
+            </div>
+
+            <div id="divEntityScheduler"></div>
+        </div>
+    </section>
+</div>
+
+@section Styles{
+    <link rel="stylesheet" type="text/css" media="screen" href="@Url.Content("~/scheduler/css/escScheduler.css")" />
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+}
+
+<script type="text/javascript" src="@Url.Content("~/scheduler/js/escScheduler.js")"></script>
+
+<script>
+    $(document).ready(function () {
+        $("#DepartmentId").chosen({ width: "100%" })
+            .on("change", function() {
+                $("#divEntityScheduler .escDatesContainer .escDateBox.escDateBoxSelected:eq(0)").trigger("click");
+            });
+
+
+        $("#divEntitySchGrid").on("drag", ".small-box", function (ev) {
+            $("#hdnDraggedEntityId").val($(ev.target).data("entityid"));
+        });
+
+        $("#divEntitySchGrid").on("mouseenter", ".small-box", function (ev) {
+            $(this).find(".small-box-footer").slideDown();
+        }).on("mouseleave", ".small-box", function (ev) {
+            $(this).find(".small-box-footer").slideUp();
+        });
+
+        $("#EntitySearch_SearchText, #textDobSearch").on("input",
+            function() {
+                $("#divEntityResult #linkSearch").trigger("click");
+            });
+
+        $("#divEntityResult #linkSearch").click(function () {
+            var callback = function (response) {
+                $("#divEntitySchGrid").html(response);
+            };
+
+            var searchText = $("#EntitySearch_SearchText").val();
+            var reqDate = $("#divEntityScheduler .escDatesContainer .escDateBox.escDateBoxSelected:eq(0)").attr("formateddate");
+
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("EntitySearch")",
+                { RequestDate: reqDate, Page: 1, SearchText: searchText, Dob: $("#textDobSearch").val(), DepartmentId: $("#DepartmentId").val() },
+                callback,
+                null,
+                200);
+            return false;
+        });
+
+        $("#linkShowInterval").click(function() {
+            var showIntervalPopup = function (response) {
+                Framework.Popup.CreateInfoPopup("Appointment Interval Configuration", response, null, null, null, true);
+            };
+            
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("AppointmentIntarval")", {}, showIntervalPopup);
+            return false;
+        });
+
+        //$(document).ready(function() {
+        //    $("#divEntityResult #linkSearch").trigger("click");
+        //});
+
+        Framework.Utility.WheelerJsUrl = '@(Url.Content("~/scheduler/js/jquery.mousewheel.min.js"))';
+
+        Framework.Utility.InitializeEscScheduler("divEntityScheduler", $("#DepartmentId").val(), "@(Model.CalendarBeginDate.ToString("yyyy-MM-01"))",
+            "@DateTime.DaysInMonth(Model.CalendarBeginDate.Year, Model.CalendarBeginDate.Month)", '@Url.Content("~/scheduler/scheduler.json")', "/scheduler/CalendarTimeline", null, null, true);
+
+        $("#linkPrevMonth,#linkNextMonth,#linkToday").click(function () {
+            debugger;
+            var objDate = new Date($("#spnAppointmentTitle").data("date"));
+
+            var linkId = $(this).attr("id");
+            var i = 0;
+            switch (linkId) {
+            case "linkPrevMonth":
+                i = -1;
+                break;
+            case "linkNextMonth":
+                i = 1;
+                break;
+            case "linkToday":
+                objDate = new Date();
+                break;
+            }
+            objDate.setDate(01);
+            objDate.setMonth(objDate.getMonth() + i);
+
+            var formatedDate = objDate.getFullYear() + "-" + Framework.Utility.FormatToTwoDigitValue(objDate.getMonth() + 1) + "-" + Framework.Utility.FormatToTwoDigitValue(objDate.getDate());
+            var daysInMonth = new Date(objDate.getFullYear(), objDate.getMonth() + 1, 0).getDate();
+
+            var monthText = objDate.toLocaleString("en-us", { month: "long" });
+            $("#spnAppointmentTitle").data("date", formatedDate).text(monthText + ", " + objDate.getFullYear());
+
+            Framework.Utility.InitializeEscScheduler("divEntityScheduler", $("#DepartmentId").val(), formatedDate, daysInMonth, '@Url.Content("~/scheduler/scheduler.json")', "/scheduler/CalendarTimeline", null, null, true);
+        });
+    });
+</script>

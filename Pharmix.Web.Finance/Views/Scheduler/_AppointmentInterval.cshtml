@@ -1,0 +1,164 @@
+﻿@model Pharmix.Web.Models.SchedulerViewModels.AppointmentIntervalViewModel
+
+<form id="formAptInterval" class="form-horizontal col-sm-12">
+    <input type="hidden" asp-for="TrustId" />
+    <div class="panel panel-primary">
+        <div class="panel-heading">Appointment Interval details</div>
+    </div>
+    <div class="col-sm-offset-2 col-sm-8">
+        <div class="form-group">
+            <div class="row">
+                <label class="col-sm-4">Day</label>
+                <label class="col-sm-4">Start Time</label>
+                <label class="col-sm-4">End Time</label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-control-static">
+                        <label>Sunday</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="SundayOpenTiming" type="time" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="SundayEndTiming" type="time" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-control-static">
+                        <label>Monday</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="MondayOpenTiming" type="time" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="MondayEndTiming" type="time" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-control-static">
+                        <label>Tuesday</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="TuesdayOpenTiming" type="time" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="TuesdayEndTiming" type="time" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-control-static">
+                        <label>Wednesday</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="WednesdayOpenTiming" type="time" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="WednesdayEndTiming" type="time" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-control-static">
+                        <label>Thursday</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="ThursdayOpenTiming" type="time" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="ThursdayEndTiming" type="time" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-control-static">
+                        <label>Friday</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="FridayOpenTiming" type="time" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="FridayEndTiming" type="time" class="form-control" />
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-control-static">
+                        <label>Wednesday</label>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="SaturdayOpenTiming" type="time" class="form-control" />
+                </div>
+                <div class="col-sm-4">
+                    <input asp-for="SaturdayEndTiming" type="time" class="form-control" />
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="AppointmentIntervalMins" class="control-label">Appointment Interval (mins)</label>
+            <input asp-for="AppointmentIntervalMins" class="form-control" />
+            <span asp-validation-for="AppointmentIntervalMins" asp-validation-message="Appointment Interval field is required." class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="clearfix"></div>
+    <hr />
+    <div class="text-center">
+        @if (Model.IsModelEditable)
+        {
+            <button type="button" id="btnSaveAptInterval" class="btn btn-primary">Save</button>
+            <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Cancel</button>
+        }
+        else
+        {
+            <button type="button" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Ok</button>
+        }
+    </div>
+</form>
+
+<script>
+    if ("@Model.IsModelEditable" == "False") {
+        $("#formAptInterval input").prop("disabled", true);
+    }
+
+    $("#btnSaveAptInterval").click(function() {
+        var callback = function (response) {
+            if (response.IsSuccess) {
+                toastr.success(response.Message);
+                $("#formAptInterval").closest(".modal").modal("hide");
+
+                $("#divEntityScheduler .escDatesContainer .escDateBox.escDateBoxSelected:eq(0)").trigger("click");
+                return;
+            }
+            toastr.error(response.Message);
+        }
+
+        var reqData = $("#formAptInterval").serialize();
+        Framework.Utility.ExecuteAjaxRequest("@Url.Action("SaveAppointmentIntarval")", reqData, callback);
+    });
+</script>

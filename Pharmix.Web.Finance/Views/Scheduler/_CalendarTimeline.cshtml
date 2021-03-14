@@ -1,0 +1,206 @@
+﻿@model Pharmix.Web.Models.SchedulerViewModels.CalendarTimelineViewModel
+<style>
+    #tblCalenderTimeline tr:hover {
+        font-weight: bold;
+        background: rgba(0, 0, 0, 0.09);
+        border: 1px solid rgba(0, 0, 0, 0.09);
+    }
+</style>
+@if (!Model.IntervalNotDefined)
+{
+    <form asp-action="DownloadAppointments" method="post">
+        <input type="hidden" id="htmlApts" name="htmlApts" value="No data" />
+        <input type="hidden" asp-for="RequestDate" />
+        <a title="Download appointments" href="javascript:void(0)" style="position: absolute" id="linkDownloadApts"><i class="fa fa-download fa-2x text-danger"></i></a>
+    </form>
+
+}
+
+<div id="divCalenderTimeline">
+    <table id="tblCalenderTimeline" class="table table-responsive" data-deptid="@Model.DepartmentId">
+        <tbody>
+            @if (Model.IntervalNotDefined)
+            {
+                <tr class="text-center">
+                    <td>
+                        Appointment intervals not defined.
+                        @if (Model.EnableIntervalConfig && Model.RequestDate.Date >= DateTime.Today.Date)
+                        {
+                            <a href="javascript:void(0)" id="linkSetupInterval">Setup</a>
+                            @Html.Raw("now.")
+                        }
+                    </td>
+                </tr>
+            }
+            else
+            {
+                foreach (var item in Model.Appointments)
+                {
+                    var isBooked = item.EntityDetail != null;
+
+                    <tr class="" data-isbooked="@(isBooked)" data-datetime="@item.AppointmentDateTime" data-entityid="@(item.EntityDetail != null ? item.EntityDetail.EntityId : 0)" data-aptid="@(item.EntityDetail != null ? item.EntityDetail.AppointmentId : 0)">
+                        <td class="text-center vertical-align-md" style="width: 20%;">
+                            <div style="border-right: 4px solid @(isBooked ? "orange" : "green")">
+                                <i class="fa fa-clock-o fa-2x"></i>&nbsp; @item.AppointmentTime
+                            </div>
+                        </td>
+                        <td class="vertical-align-md" style="width: 15%">
+                            @if (isBooked)
+                            {
+                                <span class="text-warning">Booked</span>
+                            }
+                            else
+                            {
+                                <span class="text-success">Available</span>
+                            }
+                        </td>
+                        <td class="vertical-align-md text-center action-cell" colspan="@(isBooked ? 1 : item.DisplayPropCount + 1)">
+                            @if (isBooked)
+                            {
+                                <div>
+                                    <span><i class="@item.EntityDetail.IconCss fa-2x"></i>&nbsp;<span class="">@item.EntityDetail.EntityText</span></span>&nbsp;&nbsp;&nbsp;
+                                    <a href="javascript:void(0)"><i class="fa fa-2x fa-pencil-square text-primary" title="View"></i></a>&nbsp;&nbsp;
+                                    <a href="javascript:void(0)"><i class="fa fa-2x fa-history text-danger" title="History"></i></a>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="full-opacity-hover apts-not-booked">Drop here..</div>
+                            }
+                        </td>
+                        @if (isBooked)
+                        {
+                            foreach (var prop in item.EntityDetail.DisplayProperties)
+                            {
+                                <td class="vertical-align-md text-center"><label>@prop.Key</label>: @prop.Value</td>
+                            }
+                        }
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+
+    @if (Model.CancelledAppointments.Any())
+    {
+        <div class="panel panel-primary">
+            <div class="panel-heading"><span class="fa fa-calendar fa-2x"></span>&nbsp;&nbsp;Cancelled Appointments</div>
+        </div>
+        <table id="tblCancelledApts" class="table table-responsive">
+            <tbody>
+                @foreach (var item in Model.CancelledAppointments)
+                {
+                    <tr data-datetime="@Model.RequestDate" data-entityid="@(item.EntityId)" data-aptid="@(item.AppointmentId)">
+                        <td class="text-center vertical-align-md" style="width: 10%;">
+                            <div style="border-right: 4px solid red">
+                                <i class="fa fa-clock-o fa-2x"></i>&nbsp; @item.AppointmentTime
+                            </div>
+                        </td>
+                        <td class="vertical-align-md text-center action-cell" style="width: 30%;">
+                            <div>
+                                <span><i class="@item.IconCss fa-2x"></i>&nbsp;<span class="">@item.EntityText</span></span>&nbsp;&nbsp;&nbsp;
+                                <a href="javascript:void(0)"><i class="fa fa-2x fa-pencil-square text-primary" title="View"></i></a>&nbsp;&nbsp;
+                                <a href="javascript:void(0)"><i class="fa fa-2x fa-history text-danger" title="History"></i></a>
+                            </div>
+                        </td>
+                        @foreach (var prop in item.DisplayProperties)
+                        {
+                            <td class="vertical-align-md text-center"><label>@prop.Key</label>: @prop.Value</td>
+                        }
+                    </tr>
+                }
+            </tbody>
+        </table>
+    }
+</div>
+
+<script>
+    $(document).ready(function () {
+        $("#linkSetupInterval").click(function () {
+            $("#linkShowInterval").trigger("click");
+            return false;
+        });
+
+        $("#linkDownloadApts").click(function() {
+            var $html = $("<div></div>");
+
+            $html.append('<div style="text-align:center;color:#337ab7;font-size:18px">Appointments dated @(Model.RequestDate.ToString("D"))</div>');
+            $html.append('<div style="border-bottom: 4px solid;padding-top: 20px"></div>');
+            $html.append($("#divCalenderTimeline").html());
+            $($html).find(".apts-not-booked").text("-");
+            $($html).find(".text-success").css("color", "#3c763d");
+            $($html).find(".text-warning").css("color", "##a94442");
+
+            $("#htmlApts").val($html.html());
+
+            $(this).closest("form").submit();
+        });
+
+        $("#tblCalenderTimeline,#tblCancelledApts")
+            .on("click",
+                ".action-cell a",
+                function(e) {
+                    var reqData = {
+                        AppointmentId: $(this).closest("tr").data("aptid"),
+                        EntityId: $(this).closest("tr").data("entityid"),
+                        AppointmentDateTime: $(this).closest("tr").data("datetime"),
+                        DepartmentId: $("#tblCalenderTimeline").data("deptid")
+                    };
+
+                    if ($(this).find(".fa").hasClass("fa-pencil-square")) {
+                        var showAptDetail = function(response) {
+                            Framework.Popup.CreateInfoPopup("Appointment Detail", response, null, null, null, true);
+                        }
+
+                        Framework.Utility.ExecuteAjaxRequest("@Url.Action("AppointmentDetail")",
+                            reqData,
+                            showAptDetail);
+                    } else if ($(this).find(".fa").hasClass("fa-history")) {
+                        var showAptHistory = function(response) {
+                            Framework.Popup.CreateInfoPopup("Appointment History", response, "");
+                        }
+
+                        Framework.Utility.ExecuteAjaxRequest("@Url.Action("AppointmentHistory")",
+                            reqData,
+                            showAptHistory);
+                    }
+                    return false;
+                });
+
+        $("#tblCalenderTimeline")
+            .on("dragover", "tr", function (e) {
+                e.preventDefault();
+                if ($(this).data("isbooked") == "False") {
+                    $(this).css("border-style", "dashed");
+                } else {
+                    $(this).css("cursor", "not-allowed");
+                }
+            })
+            .on("dragleave", "tr", function (e) {
+                e.preventDefault();
+                $(this).css("border-style", "none");
+            })
+            .on("drop", "tr", function (ev) {
+
+                if ($(this).data("isbooked") == "True") {
+                    toastr.error("This slot has been booked.");
+                    return;
+                }
+
+                var reqData = {
+                    EntityId: $("#hdnDraggedEntityId").val(),
+                    AppointmentId: $(this).data("aptid"),
+                    AppointmentDateTime: $(this).data("datetime"),
+                    DepartmentId: $("#tblCalenderTimeline").data("deptid")
+                };
+
+                var showAppointmentForm = function (response) {
+                    Framework.Popup.CreateInfoPopup(reqData.AppointmentId>0? "Appointment details":"Book new appointment", response, null, null, null, true);
+                };
+
+                Framework.Utility.ExecuteAjaxRequest("@Url.Action("AppointmentDetail")", reqData, showAppointmentForm);
+            });
+
+        
+    })
+</script>

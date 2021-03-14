@@ -1,0 +1,174 @@
+﻿@model Pharmix.Data.Entities.ViewModels.Customer.CustomerViewModel
+@using Pharmix.Data.Enums;
+@{
+    int customerContactCnt = Model?.CustomerContactViewModelList?.Count() ?? 0;
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<div class="col-sm-12">
+    <form id="formCustomer">
+        @Html.AntiForgeryToken()
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <input type="hidden" asp-for="Id" />
+        <div class="form-group col-md-6">
+            <label asp-for="Name" class="control-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="LeaderName" class="control-label"></label>
+            <input asp-for="LeaderName" class="form-control" />
+            <span asp-validation-for="LeaderName" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="ContactNumber" class="control-label"></label>
+            <input asp-for="ContactNumber" class="form-control" />
+            <span asp-validation-for="ContactNumber" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Town" class="control-label"></label>
+            <input asp-for="Town" class="form-control" />
+            <span asp-validation-for="Town" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="District" class="control-label"></label>
+            <input asp-for="District" class="form-control" />
+            <span asp-validation-for="District" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="DateOfBirth" class="control-label">DOB</label>
+            <input asp-for="DateOfBirth" class="form-control ui-datepicker-calendar" min="200-01-01" max="2100-12-31" />
+            @*<input asp-for="DateOfBirth" class="form-control ui-datepicker-calendar" min="@DateTime.Now.AddDays(-5000).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" />*@
+            <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="GuardianName" class="control-label">Guardian Name</label>
+            <input asp-for="GuardianName" class="form-control" />
+            <span asp-validation-for="GuardianName" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="GuardianAge" class="control-label">Guardian Age</label>
+            <input asp-for="GuardianAge" class="form-control" />
+            <span asp-validation-for="GuardianAge" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="MaritialStatus" class="control-label"></label>
+            <select asp-for="MaritialStatus" class="form-control">
+                <option value="0">Select</option>
+                <option value="@MarriageStatusEnum.Single">@MarriageStatusEnum.Single</option>
+                <option value="@MarriageStatusEnum.Married">@MarriageStatusEnum.Married</option>
+            </select>
+            @*<input asp-for="District" class="form-control" />*@
+            <span asp-validation-for="MaritialStatus" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="Occupation" class="control-label"></label>
+            <input asp-for="Occupation" class="form-control" />
+            <span asp-validation-for="Occupation" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="ResidentialAddress" class="control-label">Residential Address</label>
+            <input asp-for="ResidentialAddress" class="form-control" />
+            <span asp-validation-for="ResidentialAddress" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="NameOfBusiness" class="control-label">Name Of Business</label>
+            <input asp-for="NameOfBusiness" class="form-control" />
+            <span asp-validation-for="NameOfBusiness" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label asp-for="LocationOfBusiness" class="control-label">Location Of Business</label>
+            <input asp-for="LocationOfBusiness" class="form-control" />
+            <span asp-validation-for="LocationOfBusiness" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="control-label"></label>
+            @if (Model.Id <= 0)
+            {   //Creating new customer.
+                <button class="btn btn-success btnAddViewCustomerOpenPopup" id="btnAddCustomerOpenPopup"><i class="fa fa-plus" aria-hidden="true"></i>Add Customer <span class="badge spnAddedCustomerCount">0</span></button>
+            }
+            else
+            {
+                <button class="btn btn-success btnAddViewCustomerOpenPopup" id="btnViewCustomerOpenPopup"><i class="fa fa-eye" aria-hidden="true"></i>View Customers <span class="badge spnAddedCustomerCont">@customerContactCnt </span></button>
+            }
+            <span asp-validation-for="LocationOfBusiness" class="text-danger"></span>
+        </div>
+        <div class="clearfix"></div>
+        <hr />
+        <div class="form-group text-center">
+            <button type="button" id="btnSaveCustomer" class="btn btn-success">Save</button>
+            <button type="button" id="btnCancelCustomer" data-dismiss="modal" aria-hidden="true" class="btn btn-danger">Cancel</button>
+        </div>
+    </form>
+</div>
+
+<script src="~/lib/plugins/inputmask/jquery.inputmask.js"></script>
+<script src="~/lib/plugins/inputmask/jquery.inputmask.date.extensions.js"></script>
+<script src="~/lib/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+
+<script>
+    var addedCustomersCount = 0;
+
+    (function ($) {
+        //Framework.Utility.WireUpDatepicker("tstDatePicker");
+
+        //$('#tstDatePicker')//.inputmask("dd/mm/yyyy")
+        //    .datepicker({
+        //        timepicker: false,
+        //        format: 'dd/mm/yyyy'
+        //        //onSelectTime: function (t, $input) {
+        //        //    if (callback != null) {
+        //        //        callback(pickerId);
+        //        //    }
+        //        //}
+        //    });
+
+        $(".btnAddViewCustomerOpenPopup").on("click", function (e) {
+            e.preventDefault();
+            openAddEditCustomerContactPopupClicked(e);
+        });
+
+        var openAddEditCustomerContactPopupClicked = function (e) {
+            var customerId = $('#Id').val();
+            var callback = function (response) {
+                Framework.Popup.CreateInfoPopup("Create Customer", response, null, null, null, true);
+            };
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("GetCustomerContact","Customer")", { customerId: customerId }, callback);
+        }
+
+
+        $("body").on("click", "#btnAddCustomerContact", function () {
+            addCustomerContactClicked();
+        });
+
+
+        $("body").on("click", "#btnRemoveCustomerContact", function () {
+            var tempId = $(this).attr('temp-id');
+            deleteCustomerContactClicked(tempId);
+        });
+
+          var deleteCustomerContactClicked = function (tempId) {
+              var callback = function (response) {
+                  addedCustomersCount--;
+                $('#customerContactsContainer').html(response);
+            };
+              Framework.Utility.ExecuteAjaxRequest("@Url.Action("DeleteTempCustomerContact", "Customer")", { customerContactTempId: tempId}, callback);
+        }
+
+        var addCustomerContactClicked  = function () {
+            if ($('#formCustomerContact').valid()) {
+                var data = $('#formCustomerContact').serialize();
+                var callback = function (response) {
+                    addedCustomersCount++;
+                    $('.customerContactEditControl').val('');
+                    $('#customerContactsContainer').html(response);
+            };
+                Framework.Utility.ExecuteAjaxRequest("@Url.Action("AddCustomerContact", "Customer")", data, callback);
+
+            }
+
+        }
+
+
+    })(jQuery);
+</script>

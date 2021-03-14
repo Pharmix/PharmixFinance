@@ -1,0 +1,111 @@
+﻿@model SearchViewModel
+
+@{
+    ViewData["Title"] = "User Dashboard";
+}
+
+<div class="form-horizontal">
+    <div class="">
+        <h2>Customers</h2>
+        <div class="form-group panel panel-default panel-body">
+            <div class="row col-sm-6">
+                @Html.DisplayFor(m => m)
+            </div>
+            <button type="button" class="btn btn-danger pull-right" id="btnCreateUser">Create New</button>
+        </div>
+
+    </div>
+    <div id="divCustomerGrid"></div>
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+<script>
+    (function ($) {
+        var selectedCustomerId = 0;     //Using in Adding Customercontact. Gets initialized when clicking edit button
+        $("#SearchText").on("input",
+            function() {
+                $("#linkSearch").trigger("click");
+            });
+
+
+        var initializeFormEvents = function() {
+            $("#btnSaveCustomer").click(function () {
+                if ($("#formCustomer").valid()) {
+                    var callbackSave = function (response) {
+                        addedCustomersCount = 0;
+                        var customerId = response;
+                        $("#linkSearch").trigger("click");
+                        $("#formCustomer").closest(".modal").modal("hide");
+
+                        var callbackLoadCustomerContact = function (response) { 
+                            Framework.Popup.CreateInfoPopup("Customers", response, null, null, null, true);
+                        }
+                        Framework.Utility.ExecuteAjaxRequest("@Url.Action("GetCustomerContact")", { customerId: customerId, isIncludeItself: true  }, callbackLoadCustomerContact );
+                    };
+
+                    var request = $("#formCustomer").serialize();
+
+                    Framework.Utility.ExecuteAjaxRequest("@Url.Action("Save")", request, callbackSave);
+                    return false;
+                }
+                else
+                    return false;
+            });
+        }
+
+        var showCreateEditPopup = function(id) {
+            var callback = function (response) {
+                Framework.Popup.CreateInfoPopup(id > 0 ? "Edit Customer" : "Create Customer", response, null, null, null, true, initializeFormEvents);
+            };
+
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("Get")", { Id: id }, callback);
+        }
+
+        var performDeletion = function (id) {
+            var deleteCustomer= function () {
+                var callback = function() {
+                    $("#linkSearch").trigger("click");
+                };
+                Framework.Utility.ExecuteAjaxRequest("@Url.Action("Delete")", { Id: id }, callback);
+            }
+
+            Framework.Popup.CreateConfirmationPopup("Confrim Deletion", "Are you sure want to delete this customer?", deleteCustomer);
+        }
+
+        $("#btnCreateUser").click(function () {
+            showCreateEditPopup(0);
+            return false;
+        });
+
+        $("#divCustomerGrid").on("click", "table tbody a", function () {
+            var id = $(this).closest("tr").data("id");
+            var $iconAction = $(this).find(".fa");
+            if ($iconAction.hasClass("fa-edit")) {
+                selectedCustomerId = id;
+                showCreateEditPopup(id);
+            } else if ($iconAction.hasClass("fa-trash")) {
+                performDeletion(id);
+            } else if ($iconAction.hasClass("fa-eye")) {
+                window.location.href = '/Loan/Index?CustomerId=' + id;
+            } else if ($iconAction.hasClass("fa-upload")) {
+                window.location.href = '/Document/Upload?CustomerId=' + id;
+            }
+
+            return $(this).attr("href") !== "#";
+        });
+
+        $("#linkSearch").click(function () {
+            var callback = function (response) {
+                $("#divCustomerGrid").html(response);
+            };
+
+            var searchText = $("#SearchText").val();
+
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("Search")", { Page: 1, SearchText: searchText }, callback);
+            return false;
+        });
+
+        setTimeout(function() {
+            $("#linkSearch").trigger("click");
+        }, 200);
+    })(jQuery)
+</script>

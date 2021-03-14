@@ -1,0 +1,108 @@
+﻿@model Pharmix.Web.Models.DepartmentViewModels.DepartmentIndexViewModel
+
+@{
+    ViewBag.Title = "Departments";
+    Layout = "_Layout";
+}
+
+<section class="content-header" style="position: relative">
+    <div class="pharmix-page-title">Manage Departments</div>
+    <h1>&nbsp;&nbsp;<small><i class="fa fa-info-circle"></i>&nbsp;Manage trust departments</small></h1>
+</section>
+
+<hr />
+
+<div class="form-group panel panel-default panel-body">
+    <div class="">
+        @if (Model.IsPharmixAdminRequest)
+        {
+            <div class="col-xs-4 col-sm-3">
+                <div class="sidebar-form">
+                    @Html.DropDownListFor(m => m.TrustId, Model.TrustList, "- Select Trust -", new { @class = "form-control" })
+                </div>
+            </div>
+        }
+        else
+        {
+            <input asp-for="TrustId" type="hidden" />
+        }
+        <div class="col-xs-6 col-sm-4">
+            @Html.DisplayFor(m => m.SearchViewModel)
+        </div>
+
+        <button type="button" class="btn btn-danger pull-right small-box" id="btnCreateDept">Create New</button>
+    </div>
+</div>
+<div id="divDeptGrid"></div>
+
+<script>
+    (function ($) {
+        $("#SearchText").on("input",
+            function() {
+                $("#linkSearch").trigger("click");
+            });
+
+        $("#TrustId").on("change",
+            function() {
+                $("#linkSearch").trigger("click");
+            });;
+
+        var showPopup = function(id) {
+            var callback = function (response) {
+                Framework.Popup.CreateInfoPopup(id > 0 ? "Edit Department" : "Create Department", response, null, null, null, true);
+            };
+
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("Get", "Department")", { Id: id, TrustId: $("#TrustId").val() }, callback);
+        }
+
+        var performDeletion = function (id) {
+            var deleteDept = function () {
+                var callback = function (response) {
+                    if (response.IsSuccess) {
+                        $("#linkSearch").trigger("click");
+                        toastr.success(response.Message);
+                        return;
+                    }
+                    toastr.error(response.Message);
+                };
+                Framework.Utility.ExecuteAjaxRequest("@Url.Action("Delete", "Department")", { Id: id }, callback);
+            }
+
+            Framework.Popup.CreateConfirmationPopup("Confrim Deletion", "Are you sure want to delete this item?", deleteDept);
+        }
+
+        $("#btnCreateDept").click(function () {
+            showPopup(0);
+            return false;
+        });
+
+        $("#divDeptGrid").on("click", ".table a", function () {
+            var id = $(this).closest("tr").data("id");
+            var $iconAction = $(this).find(".fa");
+
+            if ($iconAction.hasClass("fa-edit")) {
+                showPopup(id);
+            } else if ($iconAction.hasClass("fa-trash")) {
+                performDeletion(id);
+            }
+
+            return false;
+        });
+
+        $("#linkSearch").click(function () {
+            var callback = function (response) {
+                $("#divDeptGrid").html(response);
+            };
+
+            var searchText = $("#SearchText").val();
+            var trustId = $("#TrustId").val();
+
+            Framework.Utility.ExecuteAjaxRequest("@Url.Action("Search", "Department")", { Page: 1, SearchText: searchText, TrustId: trustId }, callback, null, 200);
+            return false;
+        });
+
+        setTimeout(function() {
+            $("#linkSearch").trigger("click");
+        }, 200);
+    })(jQuery)
+</script>
